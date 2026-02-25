@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityScope - Explore Tamil Nadu</title>
+    <link rel="stylesheet" href="index-style.css">
+    <!-- Font Awesome for icons -->
+    <style>
+        /* ===== RESET AND BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Modern color palette */
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary-color: #06d6a0;
+    --accent-color: #ffd166;
+    --dark-color: #2b2d42;
+    --light-color: #f8f9fa;
+    --gray-color: #6c757d;
+    
+    /* Card colors */
+    --chennai-color: #4361ee;
+    --madurai-color: #f72585;
+    --thanjavur-color: #f8961e;
+    --ooty-color: #2a9d8f;
+    --kodaikanal-color: #9c89b8;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Transitions */
+    --transition: all 0.3s ease;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.highlight {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+}
+
+/* ===== NAVIGATION ===== */
+.main-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.logo i {
+    color: var(--primary-color);
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.logo-text {
+    color: var(--dark-color);
+}
+
+.logo-highlight {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Desktop Navigation */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 30px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    transition: var(--transition);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 50%;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-link.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.login-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white !important;
+    padding: 10px 25px !important;
+}
+
+.login-btn::after {
+    display: none;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Mobile Menu - CSS Only */
+.mobile-menu {
+    display: none;
+    position: relative;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.mobile-menu-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    display: inline-block;
+}
+
+.mobile-menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    padding: 10px 0;
+    display: none;
+    z-index: 1000;
+}
+
+.menu-toggle:checked ~ .mobile-menu-dropdown {
+    display: block;
+}
+
+.mobile-link {
+    display: block;
+    padding: 12px 20px;
+    color: var(--dark-color);
+    transition: var(--transition);
+}
+
+.mobile-link:hover {
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(6, 214, 160, 0.1));
+    color: var(--primary-color);
+}
+
+.mobile-link.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.login-mobile {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white !important;
+    margin: 10px;
+    border-radius: 30px;
+    text-align: center;
+}
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+    position: relative;
+    min-height: 500px;
+    background: linear-gradient(135deg, #1a2634, #2d3e50);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0 40px;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    z-index: 10;
+    padding: 0 20px;
+    max-width: 900px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 1s ease;
+}
+
+.hero-highlight {
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+/* Animated Shapes */
+.hero-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+}
+
+.shape1 {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    right: -100px;
+    animation-delay: 0s;
+}
+
+.shape2 {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: -50px;
+    animation-delay: 1s;
+}
+
+.shape3 {
+    width: 150px;
+    height: 150px;
+    top: 20%;
+    left: 20%;
+    animation-delay: 2s;
+}
+
+.shape4 {
+    width: 250px;
+    height: 250px;
+    bottom: 20%;
+    right: 20%;
+    animation-delay: 3s;
+}
+
+.shape5 {
+    width: 180px;
+    height: 180px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 1.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(20px, -20px) scale(1.1);
+    }
+    50% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+    75% {
+        transform: translate(20px, 20px) scale(1.05);
+    }
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+}
+
+.hero-wave svg {
+    display: block;
+}
+
+/* ===== SEARCH BAR SECTION ===== */
+.search-section {
+    background: white;
+    padding: 40px 0;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 20;
+}
+
+.search-container {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    background: white;
+    border-radius: 60px;
+    box-shadow: var(--shadow-lg);
+    padding: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 18px 25px;
+    border: none;
+    border-radius: 60px;
+    font-size: 1.1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+.search-btn {
+    padding: 18px 40px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 60px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===== WELCOME SECTION ===== */
+.welcome-section {
+    padding: 60px 0 40px;
+    background: white;
+}
+
+.welcome-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+.section-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(6, 214, 160, 0.1));
+    color: var(--primary-color);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(67, 97, 238, 0.2);
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    margin: 0 auto 25px;
+    border-radius: 2px;
+}
+
+.title-underline.left {
+    margin: 0 0 25px 0;
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    color: var(--gray-color);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.welcome-features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.welcome-feature {
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 15px;
+    transition: var(--transition);
+    background: #f8f9fa;
+}
+
+.welcome-feature:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.welcome-feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.welcome-feature-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.welcome-feature h4 {
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+.welcome-feature p {
+    color: var(--gray-color);
+    font-size: 0.95rem;
+}
+
+/* ===== ENHANCED DESTINATIONS SECTION ===== */
+.destinations-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    position: relative;
+    overflow: hidden;
+}
+
+.destinations-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 L0,100 Z" fill="rgba(67,97,238,0.03)"/></svg>');
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-divider {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    margin: 0 auto 20px;
+    border-radius: 2px;
+    position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.section-divider::before {
+    left: -20px;
+    background: var(--primary-color);
+}
+
+.section-divider::after {
+    right: -20px;
+    background: var(--secondary-color);
+}
+
+.section-subtitle {
+    color: var(--gray-color);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Enhanced Destination Card */
+.destination-card {
+    background: white;
+    border-radius: 30px;
+    padding: 30px 20px 25px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+}
+
+.destination-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(255,255,255,0.1) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0.1) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.destination-card:hover::before {
+    transform: translateX(100%);
+}
+
+.destination-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.8), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.destination-card:hover::after {
+    opacity: 1;
+}
+
+.destination-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Badge - Enhanced */
+.card-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--card-color), color-mix(in srgb, var(--card-color) 70%, black));
+    color: white;
+    padding: 8px 25px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    white-space: nowrap;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* Card Icon Wrapper - Enhanced */
+.card-icon-wrapper {
+    width: 130px;
+    height: 130px;
+    background: linear-gradient(135deg, var(--card-color), color-mix(in srgb, var(--card-color) 70%, white));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px auto 20px;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    border: 4px solid rgba(255, 255, 255, 0.5);
+}
+
+.card-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.destination-card:hover .card-icon-wrapper::before {
+    opacity: 1;
+}
+
+.destination-card:hover .card-icon-wrapper {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+    font-size: 4rem;
+    color: white;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+/* Card Title - Enhanced */
+.card-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+}
+
+.card-title::before,
+.card-title::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(135deg, var(--card-color), transparent);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.card-title::before {
+    left: -40px;
+}
+
+.card-title::after {
+    right: -40px;
+}
+
+/* Card Rating - Enhanced */
+.card-rating {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,193,7,0.2));
+    padding: 8px 15px;
+    border-radius: 50px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-rating i {
+    color: #ffc107;
+    font-size: 1rem;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+
+.card-rating span {
+    color: var(--dark-color);
+    margin-left: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* Card Features - Enhanced */
+.card-features {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.card-features span {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.card-features span:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    background: var(--card-color);
+    color: white;
+}
+
+.card-features span:hover i {
+    color: white;
+}
+
+.card-features i {
+    color: var(--card-color);
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+/* Card Dots - Enhanced */
+.card-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--card-color);
+    border-radius: 50%;
+    animation: enhancedPulse 1.5s ease infinite;
+    box-shadow: 0 0 10px var(--card-color);
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.3s;
+    background: color-mix(in srgb, var(--card-color) 80%, white);
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+    background: color-mix(in srgb, var(--card-color) 60%, white);
+}
+
+@keyframes enhancedPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+        box-shadow: 0 0 5px var(--card-color);
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+        box-shadow: 0 0 20px var(--card-color);
+    }
+}
+
+/* Card Button - Enhanced with Reduced Ripple Effect */
+.card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, var(--card-color), color-mix(in srgb, var(--card-color) 70%, black));
+    color: white;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.card-btn:hover::before {
+    width: 150px;
+    height: 150px;
+}
+
+.card-btn:hover {
+    transform: translateX(5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+.card-btn i {
+    transition: transform 0.3s ease;
+}
+
+.card-btn:hover i {
+    transform: translateX(5px) rotate(15deg);
+}
+
+/* Floating Animation for Cards */
+.destination-card:nth-child(1) { animation: floatCard 4s ease-in-out infinite; }
+.destination-card:nth-child(2) { animation: floatCard 4s ease-in-out 0.5s infinite; }
+.destination-card:nth-child(3) { animation: floatCard 4s ease-in-out 1s infinite; }
+.destination-card:nth-child(4) { animation: floatCard 4s ease-in-out 1.5s infinite; }
+.destination-card:nth-child(5) { animation: floatCard 4s ease-in-out 2s infinite; }
+
+@keyframes floatCard {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Glowing Effect on Hover */
+.destination-card:hover {
+    box-shadow: 0 30px 45px rgba(0, 0, 0, 0.15),
+                0 0 0 2px rgba(255,255,255,0.5),
+                0 0 0 4px var(--card-color);
+}
+
+/* Responsive Adjustments for Cards */
+@media (max-width: 768px) {
+    .card-title::before,
+    .card-title::after {
+        display: none;
+    }
+    
+    .card-badge {
+        font-size: 0.75rem;
+        padding: 6px 15px;
+    }
+    
+    .card-icon-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .card-icon {
+        font-size: 3rem;
+    }
+    
+    .card-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* ===== FEATURES SECTION ===== */
+.features-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 20px;
+    transition: var(--transition);
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.feature-number {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(67, 97, 238, 0.1);
+    line-height: 1;
+}
+
+.feature-icon-wrapper {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-text {
+    color: var(--gray-color);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== ABOUT SECTION ===== */
+.about-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.about-description {
+    color: var(--gray-color);
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.about-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.about-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.about-feature i {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
+.about-image {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
+}
+
+/* ===== TESTIMONIALS SECTION ===== */
+.testimonials-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.testimonial-quote {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 4rem;
+    color: rgba(67, 97, 238, 0.1);
+}
+
+.testimonial-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--gray-color);
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+}
+
+.testimonial-author h4 {
+    margin-bottom: 5px;
+    color: var(--dark-color);
+}
+
+.testimonial-author span {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #1a2634, #2d3e50);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 L0,100 Z" fill="rgba(255,255,255,0.02)"/></svg>');
+    opacity: 0.1;
+}
+
+.cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-title {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.cta-btn {
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.cta-btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.cta-btn-primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cta-btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.cta-btn-secondary:hover {
+    background: white;
+    color: var(--dark-color);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: #1a2634;
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer-logo i {
+    color: var(--secondary-color);
+    animation: spin 20s linear infinite;
+}
+
+.footer-description {
+    color: #adb5bd;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.footer-links li,
+.contact-info li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #adb5bd;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-links a i {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+.footer-links a:hover {
+    color: white;
+    transform: translateX(5px);
+}
+
+.contact-info li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #adb5bd;
+}
+
+.contact-info i {
+    color: var(--secondary-color);
+    width: 20px;
+}
+
+.contact-info a {
+    color: #adb5bd;
+    transition: var(--transition);
+}
+
+.contact-info a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #adb5bd;
+}
+
+/* ===== BACK TO TOP BUTTON ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+    z-index: 999;
+    opacity: 0.8;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .features-grid,
+    .welcome-features,
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu {
+        display: block;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+    }
+    
+    .search-input,
+    .search-btn {
+        width: 100%;
+        border-radius: 60px;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-image {
+        order: -1;
+    }
+    
+    .features-grid,
+    .welcome-features,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-section {
+        min-height: 400px;
+        padding: 40px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .card-btn {
+        max-width: 100%;
+    }
+    
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+    </style>
+
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-compass"></i>
+                <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <ul class="nav-links">
+                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="#destinations" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link login-btn">Login</a></li>
+            </ul>
+            
+            <!-- Mobile Menu (CSS Only) -->
+            <div class="mobile-menu">
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                <label for="menu-toggle" class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </label>
+                <div class="mobile-menu-dropdown">
+                    <a href="index.html" class="mobile-link active">Home</a>
+                    <a href="#destinations" class="mobile-link">Destinations</a>
+                    <a href="#about" class="mobile-link">About</a>
+                    <a href="login.html" class="mobile-link login-mobile">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Animated Background -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="hero-badge">Welcome to CityScope</span>
+            <h1 class="hero-title">Discover the Magic of <span class="hero-highlight">Tamil Nadu</span></h1>
+            <p class="hero-subtitle">Explore ancient temples, misty hill stations, and vibrant cities in the heart of South India</p>
+        </div>
+        
+        <!-- Animated Shapes -->
+        <div class="hero-shapes">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+            <div class="shape shape4"></div>
+            <div class="shape shape5"></div>
+        </div>
+        
+        <div class="hero-wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,170.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Search Bar Section - Positioned above the blue background -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Where do you want to go?">
+                <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Welcome Section - Simplified -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-content">
+                <span class="section-badge">Why Choose Us</span>
+                <h2 class="welcome-title">Plan Your Perfect <span class="highlight">Journey</span></h2>
+                <div class="title-underline"></div>
+                <p class="welcome-text">Discover the most fascinating cities in Tamil Nadu, each with its unique charm and heritage. From ancient temples to misty hill stations, we bring you authentic information to plan your perfect journey.</p>
+            </div>
+
+            <!-- Welcome Features Grid -->
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4>Curated Guides</h4>
+                    <p>Expertly crafted travel guides for each destination</p>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-camera-retro"></i>
+                    </div>
+                    <h4>Stunning Visuals</h4>
+                    <p>Beautiful imagery that brings destinations to life</p>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Real-time Info</h4>
+                    <p>Up-to-date information on best times to visit</p>
+                </div>
+                <div class="welcome-feature">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Verified Details</h4>
+                    <p>100% authentic and verified information</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Destinations Section - Enhanced -->
+    <section class="destinations-section" id="destinations">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Popular Places</span>
+                <h2 class="section-title">Popular <span class="highlight">Destinations</span></h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Explore the most fascinating cities in Tamil Nadu, each with its unique charm and heritage</p>
+            </div>
+
+            <div class="destinations-grid">
+                <!-- Chennai Card -->
+                <div class="destination-card" style="--card-color: #4361ee;">
+                    <div class="card-badge">✨ Capital City ✨</div>
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-umbrella-beach card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Chennai</h3>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.5</span>
+                    </div>
+                    <div class="card-features">
+                        <span><i class="fas fa-calendar-alt"></i> Nov-Feb</span>
+                        <span><i class="fas fa-map-marker-alt"></i> 15+ Places</span>
+                    </div>
+                    <div class="card-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <a href="chennai.html" class="card-btn">
+                        <span>Explore Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Madurai Card - Updated with gopuram icon -->
+                <div class="destination-card" style="--card-color: #f72585;">
+                    <div class="card-badge">🏛️ Temple City 🏛️</div>
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-gopuram card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Madurai</h3>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>5.0</span>
+                    </div>
+                    <div class="card-features">
+                        <span><i class="fas fa-calendar-alt"></i> Oct-Mar</span>
+                        <span><i class="fas fa-map-marker-alt"></i> 12+ Places</span>
+                    </div>
+                    <div class="card-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <a href="madurai.html" class="card-btn">
+                        <span>Explore Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Thanjavur Card - Updated with archway icon -->
+                <div class="destination-card" style="--card-color: #f8961e;">
+                    <div class="card-badge">🎭 Cultural Heritage 🎭</div>
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-archway card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Thanjavur</h3>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.8</span>
+                    </div>
+                    <div class="card-features">
+                        <span><i class="fas fa-calendar-alt"></i> Oct-Mar</span>
+                        <span><i class="fas fa-map-marker-alt"></i> 10+ Places</span>
+                    </div>
+                    <div class="card-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <a href="thanjavur.html" class="card-btn">
+                        <span>Explore Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Ooty Card -->
+                <div class="destination-card" style="--card-color: #2a9d8f;">
+                    <div class="card-badge">⛰️ Queen of Hills ⛰️</div>
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-mountain card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Ooty</h3>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>5.0</span>
+                    </div>
+                    <div class="card-features">
+                        <span><i class="fas fa-calendar-alt"></i> Apr-Jun</span>
+                        <span><i class="fas fa-map-marker-alt"></i> 20+ Places</span>
+                    </div>
+                    <div class="card-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <a href="ooty.html" class="card-btn">
+                        <span>Explore Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Kodaikanal Card -->
+                <div class="destination-card" style="--card-color: #9c89b8;">
+                    <div class="card-badge">🌊 Princess of Hills 🌊</div>
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-water card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Kodaikanal</h3>
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.7</span>
+                    </div>
+                    <div class="card-features">
+                        <span><i class="fas fa-calendar-alt"></i> Apr-Jun</span>
+                        <span><i class="fas fa-map-marker-alt"></i> 18+ Places</span>
+                    </div>
+                    <div class="card-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <a href="kodaikanal.html" class="card-btn">
+                        <span>Explore Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">What We Offer</span>
+                <h2 class="section-title">Why Travel with <span class="highlight">CityScope</span></h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">01</div>
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-map-marked-alt feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Authentic Information</h3>
+                    <p class="feature-text">Curated and verified details about each city's history, culture, and attractions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">02</div>
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-camera-retro feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Beautiful Visuals</h3>
+                    <p class="feature-text">Stunning imagery that brings each destination to life</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">03</div>
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-compass feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Travel Tips</h3>
+                    <p class="feature-text">Practical advice on best time to visit, how to reach, and where to stay</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">04</div>
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-mobile-alt feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Responsive Design</h3>
+                    <p class="feature-text">Perfect viewing experience across all devices</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <span class="section-badge">About Us</span>
+                    <h2 class="about-title">Discover the <span class="highlight">CityScope</span> Difference</h2>
+                    <div class="title-underline left"></div>
+                    <p class="about-description">Smart City Information Portal is your comprehensive guide to exploring the most fascinating cities in Tamil Nadu. From ancient temple towns to picturesque hill stations, we bring you detailed information about each destination's history, culture, must-visit places, and travel tips.</p>
+                    <p class="about-description">Whether you're a history enthusiast, nature lover, or cultural explorer, our portal helps you discover the unique charm of each city and plan your perfect journey through South India.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>City overviews</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Tourist information</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Cultural importance</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Easy navigation</span>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Testimonials</span>
+                <h2 class="section-title">What Our <span class="highlight">Travelers Say</span></h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">CityScope made planning my Tamil Nadu trip so easy! The detailed guides and authentic information helped me discover places I would have missed otherwise.</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson">
+                        <div>
+                            <h4>Sarah Johnson</h4>
+                            <span>Travel Blogger</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">The best travel portal I've used for South India. The information about temple timings and local customs was invaluable. Highly recommended!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+                        <div>
+                            <h4>Michael Chen</h4>
+                            <span>Adventure Photographer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">From Chennai's beaches to Ooty's hills, CityScope guided me through every step. The weather updates and travel tips were spot on!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya Patel">
+                        <div>
+                            <h4>Priya Patel</h4>
+                            <span>Food & Travel Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Explore Tamil Nadu?</h2>
+                <p class="cta-text">Join thousands of travelers who have discovered the magic of South India with CityScope</p>
+                <div class="cta-buttons">
+                    <a href="login.html" class="cta-btn cta-btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> 
+                        <span>Login to Save Places</span>
+                    </a>
+                    <a href="#destinations" class="cta-btn cta-btn-secondary">
+                        <i class="fas fa-map-marked-alt"></i> 
+                        <span>Browse All Cities</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-compass"></i>
+                        <span>CityScope</span>
+                    </div>
+                    <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#destinations"><i class="fas fa-chevron-right"></i> Destinations</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Popular Cities</h4>
+                    <ul class="footer-links">
+                        <li><a href="chennai.html"><i class="fas fa-chevron-right"></i> Chennai</a></li>
+                        <li><a href="madurai.html"><i class="fas fa-chevron-right"></i> Madurai</a></li>
+                        <li><a href="thanjavur.html"><i class="fas fa-chevron-right"></i> Thanjavur</a></li>
+                        <li><a href="ooty.html"><i class="fas fa-chevron-right"></i> Ooty</a></li>
+                        <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@cityscope.com">info@cityscope.com</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CSS-only Back to Top Link -->
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+</body>
+</html>

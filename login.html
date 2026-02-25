@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityScope - Login</title>
+    <link rel="stylesheet" href="login-style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-compass"></i>
+                <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <ul class="nav-links">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#destinations" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link login-btn active">Login</a></li>
+            </ul>
+            
+            <!-- Mobile Menu (CSS Only) -->
+            <div class="mobile-menu">
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                <label for="menu-toggle" class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </label>
+                <div class="mobile-menu-dropdown">
+                    <a href="index.html" class="mobile-link">Home</a>
+                    <a href="index.html#destinations" class="mobile-link">Destinations</a>
+                    <a href="index.html#about" class="mobile-link">About</a>
+                    <a href="login.html" class="mobile-link login-mobile active">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1 class="main-title">Smart City Information Portal</h1>
+        <hr class="divider">
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-header">
+                    <span class="login-badge">Welcome Back</span>
+                    <h2 class="login-title">User <span class="highlight">Login</span></h2>
+                    <div class="title-underline"></div>
+                    <p class="login-subtitle">If you are interested, you can login. Otherwise, you can skip and explore the cities directly.</p>
+                </div>
+
+                <div class="login-box">
+                    <!-- Decorative Elements -->
+                    <div class="login-shapes">
+                        <div class="shape shape1"></div>
+                        <div class="shape shape2"></div>
+                        <div class="shape shape3"></div>
+                    </div>
+
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="username" class="form-label">
+                                <i class="fas fa-user"></i>
+                                Username
+                            </label>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+                        </div>
+
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </form>
+
+                    <div class="login-divider">
+                        <span class="divider-text">OR</span>
+                    </div>
+
+                    <div class="login-options">
+                        <a href="index.html#destinations" class="skip-btn">
+                            <i class="fas fa-map-marked-alt"></i>
+                            Skip Now & Explore Cities
+                        </a>
+                        
+                        <a href="index.html" class="back-home-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Login Info Cards -->
+                <div class="login-info">
+                    <div class="info-card">
+                        <i class="fas fa-lock info-icon"></i>
+                        <h4>Secure Login</h4>
+                        <p>Your information is protected with encryption</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-map-marked-alt info-icon"></i>
+                        <h4>Save Favorites</h4>
+                        <p>Login to save your favorite destinations</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-bell info-icon"></i>
+                        <h4>Get Updates</h4>
+                        <p>Receive travel tips and exclusive offers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - UPDATED to match Chennai style -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-compass"></i>
+                        <span>City<span class="logo-highlight">Scope</span></span>
+                    </div>
+                    <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="index.html#destinations"><i class="fas fa-chevron-right"></i> Destinations</a></li>
+                        <li><a href="index.html#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Popular Cities</h4>
+                    <ul class="footer-links">
+                        <li><a href="chennai.html"><i class="fas fa-chevron-right"></i> Chennai</a></li>
+                        <li><a href="madurai.html"><i class="fas fa-chevron-right"></i> Madurai</a></li>
+                        <li><a href="thanjavur.html"><i class="fas fa-chevron-right"></i> Thanjavur</a></li>
+                        <li><a href="ooty.html"><i class="fas fa-chevron-right"></i> Ooty</a></li>
+                        <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Chennai, Tamil Nadu, India</li>
+                        <li><i class="fas fa-phone-alt"></i> +91 44 1234 5678</li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@cityscope.com">info@cityscope.com</a></li>
+                        <li><i class="fas fa-globe"></i> www.cityscope.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
+                <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for travelers</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
