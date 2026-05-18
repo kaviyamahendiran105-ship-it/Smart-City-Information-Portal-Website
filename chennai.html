@@ -2,27 +2,233 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Chennai - Capital of Tamil Nadu | CityScope</title>
-    <link rel="stylesheet" href="chennai-style.css">
-    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="css/chennai-style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .places-section .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .places-section .place-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .places-section .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        }
+        .places-section .card-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+        }
+        .places-section .place-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .places-section .place-card:hover .place-img {
+            transform: scale(1.05);
+        }
+        .places-section .card-content {
+            padding: 1.2rem;
+            flex: 1;
+        }
+        .places-section .place-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .places-section .place-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .places-section .card-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+        .places-section .card-meta i {
+            margin-right: 0.3rem;
+        }
+        @media (max-width: 768px) {
+            .places-section .places-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .places-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .places-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .places-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .places-modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .close-modal:hover {
+            transform: scale(1.1);
+        }
+        .places-list {
+            padding: 1rem;
+            list-style: none;
+        }
+        .places-list li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        .places-list li i {
+            color: var(--primary-color);
+            width: 25px;
+        }
+        .places-list li:last-child {
+            border-bottom: none;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .map-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            height: 400px;
+            width: 100%;
+        }
+        .map-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--tertiary-color);
+        }
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background: #1a1a2e;
+        }
+        .custom-popup a {
+            color: #ffd166;
+        }
+        .map-search-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .map-search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .map-search-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .map-search-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .place-card, .highlight-card, .fact-card, .info-card {
+            will-change: auto;
+        }
+        .city-content {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body class="city-page">
 
-    <!-- Top Bar with Search and Navigation -->
     <div class="top-bar">
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search places...">
-            <button class="search-btn"><i class="fas fa-search"></i></button>
+            <input type="text" class="search-input" id="globalSearchInput" placeholder="Search places... (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
+            <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
-    <!-- Navigation Bar -->
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
-                <i class="fas fa-city"></i>
+                <i class="fas fa-compass"></i>
                 <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
             </div>
             <ul class="nav-links">
@@ -43,15 +249,13 @@
     </header>
 
     <main class="city-content">
-        <!-- Hero Section with Quick Facts -->
         <section class="city-hero" id="home">
             <h2 class="city-name">Chennai <span class="city-tagline">Capital of Tamil Nadu</span></h2>
             <figure class="hero-image-container">
-                <img src="chennai.webp" alt="Chennai City" class="hero-image">
+                <img src="images/chennai.webp" alt="Chennai City" class="hero-image">
                 <figcaption class="image-caption">Marina Beach - One of the longest urban beaches in the world</figcaption>
             </figure>
             
-            <!-- Quick Facts Cards -->
             <div class="quick-facts">
                 <div class="fact-card">
                     <i class="fas fa-history fact-icon"></i>
@@ -71,7 +275,6 @@
             </div>
         </section>
 
-        <!-- About Section with Enhanced Info -->
         <section class="about-section" id="about">
             <h3 class="section-title">About Chennai</h3>
             <div class="about-content">
@@ -89,7 +292,6 @@
             </div>
         </section>
 
-        <!-- Why Visit Section -->
         <section class="highlights-section">
             <h3 class="section-title">Why Visit Chennai?</h3>
             <div class="highlights-grid">
@@ -122,15 +324,12 @@
             </ul>
         </section>
 
-        <!-- Important Places Section -->
         <section class="places-section" id="places">
             <h3 class="section-title">Important Places</h3>
-            
-            <!-- Places Cards Grid -->
             <div class="places-grid">
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-umbrella-beach"></i>
+                        <img src="images/CHENNAI/marina.jpg" alt="Marina Beach" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Marina Beach</h4>
@@ -141,10 +340,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-temple"></i>
+                        <img src="images/CHENNAI/Kapaleeswarar1.jpg" alt="Kapaleeshwarar Temple" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Kapaleeshwarar Temple</h4>
@@ -155,10 +353,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-fort-awesome"></i>
+                        <img src="images/CHENNAI/Fort_St._George,_Chennai_2.jpg" alt="Fort St. George" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Fort St. George</h4>
@@ -169,10 +366,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-landmark"></i>
+                        <img src="images/CHENNAI/Government Museum.jpg" alt="Government Museum" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Government Museum</h4>
@@ -183,10 +379,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-church"></i>
+                        <img src="images/CHENNAI/Santhome_Basilica.jpg" alt="San Thome Basilica" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">San Thome Basilica</h4>
@@ -197,10 +392,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-tree"></i>
+                        <img src="images/CHENNAI/guindy.jpg" alt="Guindy National Park" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Guindy National Park</h4>
@@ -214,7 +408,6 @@
             </div>
         </section>
 
-        <!-- Visitor Information -->
         <section class="info-section">
             <h3 class="section-title">Visitor Information</h3>
             <div class="info-cards">
@@ -241,7 +434,6 @@
             </div>
         </section>
 
-        <!-- Weather Widget -->
         <section class="weather-section">
             <h3 class="section-title">Current Weather</h3>
             <div class="weather-widget">
@@ -259,7 +451,16 @@
             </div>
         </section>
 
-        <!-- Newsletter Signup -->
+        <section class="map-section">
+            <h3 class="map-title"><i class="fas fa-map-marked-alt"></i> Explore Chennai on Map</h3>
+            <div class="map-search-wrapper">
+                <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search for a place in Chennai (e.g., Marina, Kapaleeshwarar, Vandalur)">
+                <button id="mapSearchBtn" class="map-search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+            <div id="chennaiMap" class="map-container"></div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #666;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
+        </section>
+
         <section class="newsletter-section">
             <div class="newsletter-container">
                 <h3 class="newsletter-title">Discover More About Chennai</h3>
@@ -271,13 +472,11 @@
             </div>
         </section>
 
-        <!-- Back Link -->
         <div style="text-align: center;">
             <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
     </main>
 
-    <!-- Enhanced Footer matching index.html style -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
@@ -334,14 +533,195 @@
         </div>
     </footer>
 
-    <!-- CSS-only Back to Top Link -->
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- Mobile Menu Script -->
+    <div id="placesModal" class="places-modal">
+        <div class="places-modal-content">
+            <div class="places-modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Top 15+ Places in Chennai</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <ul class="places-list">
+                <li><i class="fas fa-umbrella-beach"></i> Marina Beach</li>
+                <li><i class="fas fa-temple"></i> Kapaleeshwarar Temple</li>
+                <li><i class="fas fa-fort-awesome"></i> Fort St. George</li>
+                <li><i class="fas fa-landmark"></i> Government Museum</li>
+                <li><i class="fas fa-church"></i> San Thome Basilica</li>
+                <li><i class="fas fa-tree"></i> Guindy National Park</li>
+                <li><i class="fas fa-shopping-cart"></i> T. Nagar Shopping</li>
+                <li><i class="fas fa-music"></i> Kalakshetra Foundation</li>
+                <li><i class="fas fa-film"></i> Kodambakkam (Kollywood)</li>
+                <li><i class="fas fa-university"></i> University of Madras</li>
+                <li><i class="fas fa-train"></i> Chennai Central Railway Station</li>
+                <li><i class="fas fa-laptop-code"></i> Tidel Park (IT Hub)</li>
+                <li><i class="fas fa-palette"></i> Cholamandal Artists’ Village</li>
+                <li><i class="fas fa-water"></i> Elliot’s Beach (Besant Nagar)</li>
+                <li><i class="fas fa-church"></i> St. Mary’s Church</li>
+                <li><i class="fas fa-book"></i> Connemara Public Library</li>
+                <li><i class="fas fa-dragon"></i> Vandalur Zoo (Arignar Anna Zoological Park)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
+
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchBtn = document.getElementById('globalSearchBtn');
+        
+        const cityPageMap = {
+            'chennai': 'chennai.html',
+            'madurai': 'madurai.html',
+            'thanjavur': 'thanjavur.html',
+            'ooty': 'ooty.html',
+            'kodaikanal': 'kodaikanal.html'
+        };
+        
+        function performGlobalSearch() {
+            let query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
+                return;
+            }
+            let matchedCity = null;
+            for (let city in cityPageMap) {
+                if (query.includes(city) || city.includes(query)) {
+                    matchedCity = city;
+                    break;
+                }
+            }
+            if (matchedCity) {
+                window.location.href = cityPageMap[matchedCity];
+            } else {
+                alert('City not found. Try: Chennai, Madurai, Thanjavur, Ooty, or Kodaikanal');
+            }
+        }
+        
+        if (searchBtn) {
+            searchBtn.addEventListener('click', performGlobalSearch);
+        }
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performGlobalSearch();
+                }
+            });
+        }
+
+        let map;
+        let markersGroup = [];
+
+        function initMap() {
+            var chennaiLat = 13.0827;
+            var chennaiLng = 80.2707;
+            map = L.map('chennaiMap').setView([chennaiLat, chennaiLng], 12);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            var redIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<i class="fas fa-map-marker-alt" style="font-size: 32px; color: #ff4757; text-shadow: 0 0 5px white;"></i>',
+                iconSize: [32, 32],
+                popupAnchor: [0, -16]
+            });
+
+            var places = [
+                { name: "Marina Beach", lat: 13.0500, lng: 80.2824, icon: "fa-umbrella-beach", color: "#ff6b6b" },
+                { name: "Kapaleeshwarar Temple", lat: 13.0340, lng: 80.2707, icon: "fa-temple", color: "#4ecdc4" },
+                { name: "Fort St. George", lat: 13.0798, lng: 80.2869, icon: "fa-fort-awesome", color: "#ffe66d" },
+                { name: "Government Museum", lat: 13.0719, lng: 80.2572, icon: "fa-landmark", color: "#a8e6cf" },
+                { name: "San Thome Basilica", lat: 13.0335, lng: 80.2777, icon: "fa-church", color: "#ff8c42" },
+                { name: "Guindy National Park", lat: 13.0060, lng: 80.2240, icon: "fa-tree", color: "#6b5b95" },
+                { name: "T. Nagar", lat: 13.0400, lng: 80.2420, icon: "fa-shopping-cart", color: "#feb236" },
+                { name: "Kalakshetra Foundation", lat: 12.9949, lng: 80.2605, icon: "fa-music", color: "#d64161" },
+                { name: "Kodambakkam", lat: 13.0529, lng: 80.2247, icon: "fa-film", color: "#ff7b54" },
+                { name: "Chennai Central", lat: 13.0825, lng: 80.2758, icon: "fa-train", color: "#2ecc71" },
+                { name: "Tidel Park", lat: 12.9825, lng: 80.2419, icon: "fa-laptop-code", color: "#3498db" },
+                { name: "Elliot's Beach", lat: 12.9980, lng: 80.2678, icon: "fa-water", color: "#1abc9c" },
+                { name: "Vandalur Zoo", lat: 12.8790, lng: 80.0785, icon: "fa-dragon", color: "#9b59b6" },
+                { name: "St. Thomas Mount", lat: 13.0037, lng: 80.1965, icon: "fa-church", color: "#e84393" },
+                { name: "Valluvar Kottam", lat: 13.0588, lng: 80.2495, icon: "fa-monument", color: "#f39c12" },
+                { name: "Theosophical Society", lat: 13.0092, lng: 80.2615, icon: "fa-leaf", color: "#27ae60" },
+                { name: "MGR Film City", lat: 13.0090, lng: 80.2100, icon: "fa-film", color: "#c0392b" },
+                { name: "Birla Planetarium", lat: 13.0600, lng: 80.2480, icon: "fa-star", color: "#2980b9" }
+            ];
+
+            places.forEach(place => {
+                var marker = L.marker([place.lat, place.lng], { icon: redIcon }).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-family: 'Segoe UI', sans-serif; background: #1e1e2f; color: #fff; padding: 5px; border-radius: 8px;">
+                        <strong style="color: ${place.color}; font-size: 1.1rem;">${place.name}</strong><br>
+                        <i class="fas ${place.icon}" style="color: #4ecdc4;"></i> Must-visit spot in Chennai
+                    </div>
+                `, { className: 'custom-popup' });
+                markersGroup.push({ marker: marker, name: place.name.toLowerCase(), lat: place.lat, lng: place.lng });
+            });
+        }
+
+        function searchPlaceOnMap(query) {
+            if (!query.trim()) {
+                alert("Please enter a place name to search.");
+                return;
+            }
+            const lowerQuery = query.toLowerCase();
+            const found = markersGroup.find(item => item.name.includes(lowerQuery));
+            if (found) {
+                map.setView([found.lat, found.lng], 14);
+                found.marker.openPopup();
+            } else {
+                alert(`No place found matching "${query}". Try: Marina, Kapaleeshwarar, Vandalur, etc.`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+
+            const modal = document.getElementById('placesModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const showBtn = document.getElementById('showPlacesBtn');
+
+            if (modal && closeBtn && showBtn) {
+                showBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+                closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+                window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+            }
+
+            const mapSearchBtn = document.getElementById('mapSearchBtn');
+            const mapSearchInput = document.getElementById('mapSearchInput');
+            if (mapSearchBtn && mapSearchInput) {
+                mapSearchBtn.addEventListener('click', () => {
+                    searchPlaceOnMap(mapSearchInput.value);
+                });
+                mapSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchPlaceOnMap(mapSearchInput.value);
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script src="JS/chennai.js"></script>
+
+    <script>
+        (function() {
+            const whyVisitSection = document.querySelector('.highlights-section');
+            if (whyVisitSection && !document.getElementById('showPlacesBtn')) {
+                const btnContainer = document.createElement('div');
+                btnContainer.style.textAlign = 'center';
+                btnContainer.style.marginTop = '30px';
+                btnContainer.innerHTML = '<button id="showPlacesBtn" class="plan-trip-btn" style="background: linear-gradient(135deg, #4361ee, #f72585);"><i class="fas fa-map-marker-alt"></i> Show 15+ Places in Chennai</button>';
+                whyVisitSection.appendChild(btnContainer);
+            }
+        })();
     </script>
 </body>
 </html>

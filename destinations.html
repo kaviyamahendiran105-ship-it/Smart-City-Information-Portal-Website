@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CityScope - Discover Tamil Nadu</title>
+    <title>CityScope - Destinations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -187,7 +186,7 @@
 
         .hero-section {
             position: relative;
-            min-height: 600px;
+            min-height: 500px;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             display: flex;
             align-items: center;
@@ -221,7 +220,7 @@
             margin-bottom: 1rem;
         }
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
@@ -257,72 +256,6 @@
             .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
         }
 
-        .welcome-section {
-            padding: 5rem 0;
-            background: white;
-        }
-        .welcome-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-        }
-        .section-badge {
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(79,172,254,0.1));
-            color: var(--primary);
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .welcome-title {
-            font-size: 2.5rem;
-            margin: 1rem 0;
-        }
-        .highlight {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .welcome-text {
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        .welcome-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .welcome-feature {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .welcome-feature:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow);
-        }
-        .welcome-feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-        }
-        .welcome-feature-icon i {
-            font-size: 2rem;
-            color: white;
-        }
-        .welcome-feature h4 {
-            margin-bottom: 0.5rem;
-        }
-
         .destinations-section {
             padding: 5rem 0;
             background: linear-gradient(135deg, #f0f2f5, #e9ecef);
@@ -331,9 +264,26 @@
             text-align: center;
             margin-bottom: 3rem;
         }
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(79,172,254,0.1));
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
         .section-title {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+        }
+        .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .section-divider {
             width: 80px;
@@ -341,6 +291,12 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             margin: 1rem auto;
             border-radius: 2px;
+        }
+        .section-subtitle {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1rem;
         }
         .destinations-grid {
             display: grid;
@@ -360,7 +316,9 @@
             box-shadow: 0 25px 40px rgba(0,0,0,0.15);
         }
         .card-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             background: var(--primary);
             color: white;
             padding: 0.3rem 1rem;
@@ -401,6 +359,9 @@
             padding: 0.3rem 0.8rem;
             border-radius: 30px;
             font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         .card-btn {
             display: inline-flex;
@@ -418,120 +379,6 @@
             transform: translateX(5px);
         }
 
-        .experiences-section {
-            padding: 5rem 0;
-            background: white;
-        }
-        .experiences-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        .exp-card {
-            background: #f8f9fa;
-            border-radius: 20px;
-            overflow: hidden;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .exp-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-        .exp-icon {
-            font-size: 3rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 1.5rem 0 1rem;
-        }
-        .exp-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-        .exp-desc {
-            color: #666;
-            padding: 0 1rem 1.5rem;
-        }
-
-        .testimonials-section {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f9f9f9, #ffffff);
-        }
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        .testimonial-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-        .testimonial-quote {
-            font-size: 2rem;
-            color: var(--primary);
-            opacity: 0.3;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .testimonial-author img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #2c3e50, #1a2634);
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
-            margin-bottom: 0;
-        }
-        .cta-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-        .cta-btn {
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        .cta-btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .cta-btn-secondary {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        .cta-btn:hover {
-            transform: translateY(-3px);
-        }
-
         .footer {
             background: #1a1a2e;
             color: #fff;
@@ -539,6 +386,16 @@
             position: relative;
             margin-top: 0;
             overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), #2a9d8f);
+            opacity: 0.8;
         }
         .footer .container {
             max-width: 1200px;
@@ -757,8 +614,8 @@
                 <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="destinations.html" class="nav-link active">Destinations</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="login.html" class="nav-link login-btn">Login</a></li>
                 <li><a href="plan-trip.html" class="nav-link plan-trip-header-btn">✈️ Plan Trip</a></li>
@@ -768,7 +625,7 @@
                 <label for="menu-toggle" class="mobile-menu-btn"><i class="fas fa-bars"></i></label>
                 <div class="mobile-menu-dropdown">
                     <a href="index.html" class="mobile-link">Home</a>
-                    <a href="destinations.html" class="mobile-link">Destinations</a>
+                    <a href="destinations.html" class="mobile-link active">Destinations</a>
                     <a href="about.html" class="mobile-link">About</a>
                     <a href="login.html" class="mobile-link">Login</a>
                     <a href="plan-trip.html" class="mobile-link">Plan Trip</a>
@@ -789,30 +646,13 @@
     <section class="hero-section">
         <img src="images/tamil-nadu-map.jpg" alt="Tamil Nadu Heritage" class="hero-bg-image" onerror="this.src='https://via.placeholder.com/1920x600?text=Tamil+Nadu'">
         <div class="hero-content">
-            <span class="hero-badge">✨ Welcome to CityScope ✨</span>
-            <h1 class="hero-title">Discover the Magic of <span class="hero-highlight">Tamil Nadu</span></h1>
-            <p class="hero-subtitle">Explore ancient temples, misty hills, and vibrant cities – your journey starts here.</p>
+            <span class="hero-badge">✨ Discover Your Next Adventure ✨</span>
+            <h1 class="hero-title">Explore All <span class="hero-highlight">Destinations</span></h1>
+            <p class="hero-subtitle">Find your perfect getaway in the heart of Tamil Nadu – from ancient temples to misty hills.</p>
             <div class="hero-stats">
-                <div class="stat"><div class="stat-number" data-count="10">0</div><div class="stat-label">+ Cities</div></div>
-                <div class="stat"><div class="stat-number" data-count="100">0</div><div class="stat-label">+ Attractions</div></div>
-                <div class="stat"><div class="stat-number" data-count="5000">0</div><div class="stat-label">Happy Travelers</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="welcome-section">
-        <div class="container">
-            <div class="welcome-content">
-                <span class="section-badge">Why Choose Us</span>
-                <h2 class="welcome-title">Plan Your Perfect <span class="highlight">Journey</span></h2>
-                <div class="title-emoji">🌟</div>
-                <p class="welcome-text">From the bustling streets of Chennai to the serene hills of Ooty, we bring you authentic travel guides, curated experiences, and real-time insights to make your trip unforgettable.</p>
-            </div>
-            <div class="welcome-features">
-                <div class="welcome-feature"><div class="welcome-feature-icon"><i class="fas fa-map-marked-alt"></i></div><h4>Curated Guides</h4><p>Expertly crafted for each destination</p></div>
-                <div class="welcome-feature"><div class="welcome-feature-icon"><i class="fas fa-camera-retro"></i></div><h4>Stunning Visuals</h4><p>Beautiful imagery that inspires</p></div>
-                <div class="welcome-feature"><div class="welcome-feature-icon"><i class="fas fa-clock"></i></div><h4>Real-time Info</h4><p>Best times, weather, and events</p></div>
-                <div class="welcome-feature"><div class="welcome-feature-icon"><i class="fas fa-shield-alt"></i></div><h4>Verified Details</h4><p>100% authentic information</p></div>
+                <div class="stat"><div class="stat-number" data-count="5">0</div><div class="stat-label">+ Cities</div></div>
+                <div class="stat"><div class="stat-number" data-count="80">0</div><div class="stat-label">+ Attractions</div></div>
+                <div class="stat"><div class="stat-number" data-count="2000">0</div><div class="stat-label">Happy Travelers</div></div>
             </div>
         </div>
     </section>
@@ -820,16 +660,16 @@
     <section class="destinations-section">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">Popular Places</span>
-                <h2 class="section-title">Featured <span class="highlight">Destinations</span></h2>
+                <span class="section-badge"><i class="fas fa-city"></i> All Cities 🏙️</span>
+                <h2 class="section-title">Popular <span class="highlight">Destinations</span> ✨</h2>
                 <div class="section-divider"></div>
-                <p>Explore the most loved cities in Tamil Nadu</p>
+                <p class="section-subtitle">Discover the most fascinating cities in Tamil Nadu 🌟</p>
             </div>
             <div class="destinations-grid">
                 <div class="destination-card">
                     <div class="card-badge">✨ Capital City ✨</div>
                     <div class="card-icon-wrapper"><img src="images/chennai.webp" alt="Chennai" class="card-image"></div>
-                    <h3 class="card-title">Chennai</h3>
+                    <h3 class="card-title">Chennai 🏖️</h3>
                     <div class="card-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.5</div>
                     <div class="card-features"><span><i class="fas fa-calendar-alt"></i> Nov-Feb</span><span><i class="fas fa-map-marker-alt"></i> 15+ Places</span></div>
                     <a href="chennai.html" class="card-btn">Explore Now <i class="fas fa-arrow-right"></i></a>
@@ -837,65 +677,34 @@
                 <div class="destination-card">
                     <div class="card-badge">🏛️ Temple City 🏛️</div>
                     <div class="card-icon-wrapper"><img src="images/Madurai tem.jpeg" alt="Madurai" class="card-image"></div>
-                    <h3 class="card-title">Madurai</h3>
+                    <h3 class="card-title">Madurai 🕉️</h3>
                     <div class="card-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div>
                     <div class="card-features"><span><i class="fas fa-calendar-alt"></i> Oct-Mar</span><span><i class="fas fa-map-marker-alt"></i> 12+ Places</span></div>
                     <a href="madurai.html" class="card-btn">Explore Now <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="destination-card">
+                    <div class="card-badge">🎭 Cultural Heritage 🎭</div>
+                    <div class="card-icon-wrapper"><img src="images/thanjavur.jpeg" alt="Thanjavur" class="card-image"></div>
+                    <h3 class="card-title">Thanjavur 🏛️</h3>
+                    <div class="card-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.8</div>
+                    <div class="card-features"><span><i class="fas fa-calendar-alt"></i> Oct-Mar</span><span><i class="fas fa-map-marker-alt"></i> 10+ Places</span></div>
+                    <a href="thanjavur.html" class="card-btn">Explore Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="destination-card">
                     <div class="card-badge">⛰️ Queen of Hills ⛰️</div>
                     <div class="card-icon-wrapper"><img src="images/ooty.webp" alt="Ooty" class="card-image"></div>
-                    <h3 class="card-title">Ooty</h3>
+                    <h3 class="card-title">Ooty 🌿</h3>
                     <div class="card-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div>
                     <div class="card-features"><span><i class="fas fa-calendar-alt"></i> Apr-Jun</span><span><i class="fas fa-map-marker-alt"></i> 20+ Places</span></div>
                     <a href="ooty.html" class="card-btn">Explore Now <i class="fas fa-arrow-right"></i></a>
                 </div>
-            </div>
-            <div style="text-align:center; margin-top:40px;">
-                <a href="destinations.html" class="cta-btn cta-btn-primary" style="display:inline-block;">View All Destinations</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="experiences-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Must-Try Experiences</span>
-                <h2 class="section-title">Immerse in <span class="highlight">Tamil Nadu</span></h2>
-                <div class="section-divider"></div>
-            </div>
-            <div class="experiences-grid">
-                <div class="exp-card"><i class="fas fa-temple exp-icon"></i><h3 class="exp-title">Temple Trails</h3><p class="exp-desc">Explore ancient Chola & Pandya architecture</p></div>
-                <div class="exp-card"><i class="fas fa-utensils exp-icon"></i><h3 class="exp-title">Food Safari</h3><p class="exp-desc">Savour authentic Chettinad & Kongu cuisines</p></div>
-                <div class="exp-card"><i class="fas fa-mountain exp-icon"></i><h3 class="exp-title">Hill Station Retreat</h3><p class="exp-desc">Relax in Ooty, Kodaikanal & Yercaud</p></div>
-                <div class="exp-card"><i class="fas fa-ship exp-icon"></i><h3 class="exp-title">Coastal Wonders</h3><p class="exp-desc">Marina Beach, Mahabalipuram & more</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Testimonials</span>
-                <h2 class="section-title">What Our <span class="highlight">Travelers Say</span></h2>
-                <div class="section-divider"></div>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card"><div class="testimonial-quote"><i class="fas fa-quote-left"></i></div><p class="testimonial-text">CityScope made planning my Tamil Nadu trip effortless. The details about temple timings and local food were spot on!</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/women/44.jpg"><div><h4>Sarah J.</h4><span>Travel Blogger</span></div></div></div>
-                <div class="testimonial-card"><div class="testimonial-quote"><i class="fas fa-quote-left"></i></div><p class="testimonial-text">Best travel portal for South India. I discovered hidden gems in Madurai and Ooty thanks to their curated guides.</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/men/32.jpg"><div><h4>Michael C.</h4><span>Photographer</span></div></div></div>
-                <div class="testimonial-card"><div class="testimonial-quote"><i class="fas fa-quote-left"></i></div><p class="testimonial-text">From Chennai's beaches to Kodaikanal's mist, every recommendation was perfect. Highly recommend CityScope!</p><div class="testimonial-author"><img src="https://randomuser.me/api/portraits/women/68.jpg"><div><h4>Priya P.</h4><span>Food Enthusiast</span></div></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to Explore Tamil Nadu?</h2>
-                <p>Join thousands of happy travelers who have discovered the magic of South India with CityScope.</p>
-                <div class="cta-buttons">
-                    <a href="login.html" class="cta-btn cta-btn-primary"><i class="fas fa-sign-in-alt"></i> Login to Save Places</a>
-                    <a href="destinations.html" class="cta-btn cta-btn-secondary"><i class="fas fa-map-marked-alt"></i> Browse All Cities</a>
+                <div class="destination-card">
+                    <div class="card-badge">🌊 Princess of Hills 🌊</div>
+                    <div class="card-icon-wrapper"><img src="images/kodaikanal.jpg" alt="Kodaikanal" class="card-image"></div>
+                    <h3 class="card-title">Kodaikanal 🌸</h3>
+                    <div class="card-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
+                    <div class="card-features"><span><i class="fas fa-calendar-alt"></i> Apr-Jun</span><span><i class="fas fa-map-marker-alt"></i> 18+ Places</span></div>
+                    <a href="kodaikanal.html" class="card-btn">Explore Now <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -1030,15 +839,6 @@
                 mobileBtn.addEventListener('click', () => {
                     if (menuToggle) menuToggle.checked = !menuToggle.checked;
                 });
-            }
-
-            if (!localStorage.getItem('visited')) {
-                const toast = document.createElement('div');
-                toast.innerText = '✨ Welcome to CityScope! Explore Tamil Nadu with us ✨';
-                toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#28a745; color:white; padding:10px 20px; border-radius:40px; z-index:10000; box-shadow:0 2px 10px rgba(0,0,0,0.2);';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-                localStorage.setItem('visited', 'true');
             }
         });
     </script>

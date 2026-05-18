@@ -3,141 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CityScope - Login</title>
-    <link rel="stylesheet" href="login-style.css">
-    <!-- Font Awesome for icons -->
+    <title>Madurai - Athens of the East | CityScope</title>
+    <link rel="stylesheet" href="css/madurai-style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .places-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .places-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .places-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .places-modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .close-modal:hover {
+            transform: scale(1.1);
+        }
+        .places-list {
+            padding: 1rem;
+            list-style: none;
+        }
+        .places-list li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .places-list li i {
+            color: var(--primary-color);
+            width: 25px;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        #showPlacesBtn {
+            background: linear-gradient(135deg, #4361ee, #4cc9f0);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #showPlacesBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67,97,238,0.4);
+        }
+        .map-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            height: 400px;
+            width: 100%;
+        }
+        .map-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--tertiary-color);
+        }
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background: #1a1a2e;
+        }
+        .custom-popup a {
+            color: #ffd166;
+        }
+    </style>
 </head>
-<body>
+<body class="city-page">
 
-    <!-- Navigation Bar -->
+    <div class="top-bar">
+        <div class="search-container">
+            <input type="text" id="globalSearchInput" class="search-input" placeholder="Search places... (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
+            <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
                 <i class="fas fa-compass"></i>
                 <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
             </div>
-
-            <!-- Desktop Navigation -->
             <ul class="nav-links">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="index.html#destinations" class="nav-link">Destinations</a></li>
-                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="login.html" class="nav-link login-btn active">Login</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+                <li class="nav-item"><a href="#places" class="nav-link"><i class="fas fa-map-marker-alt"></i> Places</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
-            
-            <!-- Mobile Menu (CSS Only) -->
-            <div class="mobile-menu">
-                <input type="checkbox" id="menu-toggle" class="menu-toggle">
-                <label for="menu-toggle" class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </label>
-                <div class="mobile-menu-dropdown">
-                    <a href="index.html" class="mobile-link">Home</a>
-                    <a href="index.html#destinations" class="mobile-link">Destinations</a>
-                    <a href="index.html#about" class="mobile-link">About</a>
-                    <a href="login.html" class="mobile-link login-mobile active">Login</a>
-                </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
             </div>
         </div>
     </nav>
 
-    <!-- Page Header -->
     <header class="page-header">
         <h1 class="main-title">Smart City Information Portal</h1>
         <hr class="divider">
     </header>
 
-    <!-- Login Section -->
-    <section class="login-section">
-        <div class="container">
-            <div class="login-container">
-                <div class="login-header">
-                    <span class="login-badge">Welcome Back</span>
-                    <h2 class="login-title">User <span class="highlight">Login</span></h2>
-                    <div class="title-underline"></div>
-                    <p class="login-subtitle">If you are interested, you can login. Otherwise, you can skip and explore the cities directly.</p>
-                </div>
+    <main class="city-content">
+        <section class="city-hero" id="home">
+            <h2 class="city-name">Madurai <span class="city-tagline">The Athens of the East</span></h2>
+            <figure class="hero-image-container">
+                <img src="images/Madurai tem.jpeg" alt="Madurai Meenakshi Temple" class="hero-image">
+                <figcaption class="image-caption">Meenakshi Amman Temple - A magnificent architectural marvel</figcaption>
+            </figure>
+            <div class="quick-facts">
+                <div class="fact-card"><i class="fas fa-history fact-icon"></i><h4 class="fact-title">History</h4><p class="fact-text">Madurai is one of the oldest continuously inhabited cities in the world, with a history dating back more than 2,500 years. It was the capital of the Pandyan dynasty.</p></div>
+                <div class="fact-card"><i class="fas fa-language fact-icon"></i><h4 class="fact-title">Language</h4><p class="fact-text">Tamil, English</p></div>
+                <div class="fact-card"><i class="fas fa-utensils fact-icon"></i><h4 class="fact-title">Famous Food</h4><p class="fact-text">Kari Dosa, Kothu Parotta, Madurai Halwa</p></div>
+            </div>
+        </section>
 
-                <div class="login-box">
-                    <!-- Decorative Elements -->
-                    <div class="login-shapes">
-                        <div class="shape shape1"></div>
-                        <div class="shape shape2"></div>
-                        <div class="shape shape3"></div>
-                    </div>
-
-                    <form class="login-form">
-                        <div class="form-group">
-                            <label for="username" class="form-label">
-                                <i class="fas fa-user"></i>
-                                Username
-                            </label>
-                            <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="form-label">
-                                <i class="fas fa-envelope"></i>
-                                Email
-                            </label>
-                            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
-                        </div>
-
-                        <button type="submit" class="login-btn">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
-                        </button>
-                    </form>
-
-                    <div class="login-divider">
-                        <span class="divider-text">OR</span>
-                    </div>
-
-                    <div class="login-options">
-                        <a href="index.html#destinations" class="skip-btn">
-                            <i class="fas fa-map-marked-alt"></i>
-                            Skip Now & Explore Cities
-                        </a>
-                        
-                        <a href="index.html" class="back-home-btn">
-                            <i class="fas fa-arrow-left"></i>
-                            Back to Home
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Login Info Cards -->
-                <div class="login-info">
-                    <div class="info-card">
-                        <i class="fas fa-lock info-icon"></i>
-                        <h4>Secure Login</h4>
-                        <p>Your information is protected with encryption</p>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-map-marked-alt info-icon"></i>
-                        <h4>Save Favorites</h4>
-                        <p>Login to save your favorite destinations</p>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-bell info-icon"></i>
-                        <h4>Get Updates</h4>
-                        <p>Receive travel tips and exclusive offers</p>
-                    </div>
+        <section class="about-section" id="about">
+            <h3 class="section-title">About Madurai</h3>
+            <div class="about-content">
+                <p class="about-text">Madurai is one of the oldest cities in Tamil Nadu, with a rich cultural heritage spanning over two millennia. It is well known for its rich culture, history, and famous temples, particularly the Meenakshi Amman Temple.</p>
+                <p class="about-text">The city is built around the Meenakshi Amman Temple, which acts as the geographical and ritual center. Madurai was an important center of trade and learning, with Roman and Greek connections evident from archaeological findings.</p>
+                <div class="cultural-highlights">
+                    <span class="cultural-badge"><i class="fas fa-music"></i> Carnatic Music</span>
+                    <span class="cultural-badge"><i class="fas fa-paint-brush"></i> Traditional Art</span>
+                    <span class="cultural-badge"><i class="fas fa-tshirt"></i> Handloom Silk</span>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer - UPDATED to match Chennai style -->
+        <section class="highlights-section">
+            <h3 class="section-title">Why Visit Madurai?</h3>
+            <div class="highlights-grid">
+                <div class="highlight-card"><i class="fas fa-landmark card-icon"></i><h4 class="card-title">Ancient History</h4><p class="card-text">Experience one of the world's oldest continuously inhabited cities</p></div>
+                <div class="highlight-card"><i class="fas fa-temple card-icon"></i><h4 class="card-title">Famous Temples</h4><p class="card-text">Home to magnificent Dravidian architecture and spiritual sanctuaries</p></div>
+                <div class="highlight-card"><i class="fas fa-drum card-icon"></i><h4 class="card-title">Rich Culture</h4><p class="card-text">Experience traditional Tamil culture, music, and festivals</p></div>
+                <div class="highlight-card"><i class="fas fa-shopping-bag card-icon"></i><h4 class="card-title">Local Markets</h4><p class="card-text">Famous for Sungudi sarees, spices, and antique brass lamps</p></div>
+            </div>
+            <ul class="highlights-list">
+                <li class="highlight-item">Ancient historical city with 2500+ years of heritage</li>
+                <li class="highlight-item">Famous temples with intricate stone carvings</li>
+                <li class="highlight-item">Traditional Tamil culture and festivals</li>
+                <li class="highlight-item">UNESCO World Heritage tentative sites</li>
+            </ul>
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="showPlacesBtn"><i class="fas fa-map-marker-alt"></i> Show 20+ Places in Madurai</button>
+            </div>
+        </section>
+
+        <section class="places-section" id="places">
+            <h3 class="section-title">Important Places</h3>
+            <div class="places-grid">
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/Meenakshi Amman Temple.jpg" alt="Meenakshi Amman Temple" class="place-img"></div><div class="card-content"><h4 class="place-title">Meenakshi Amman Temple</h4><p class="place-description">Iconic temple with 14 towering gopurams and 1000-pillar hall</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> 5 AM - 6 PM</span><span class="meta-tag"><i class="fas fa-tag"></i> Must Visit</span></div></div></div>
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/Thirumalai Nayakkar Mahal.jpg" alt="Thirumalai Nayakkar Palace" class="place-img"></div><div class="card-content"><h4 class="place-title">Thirumalai Nayakkar Palace</h4><p class="place-description">17th-century palace blending Dravidian and Islamic styles</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> 9 AM - 5 PM</span><span class="meta-tag"><i class="fas fa-tag"></i> Historical</span></div></div></div>
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/Gandhi Memorial Museum.jpg" alt="Gandhi Memorial Museum" class="place-img"></div><div class="card-content"><h4 class="place-title">Gandhi Memorial Museum</h4><p class="place-description">Rare artifacts and historical exhibits from freedom struggle</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> 10 AM - 6 PM</span><span class="meta-tag"><i class="fas fa-tag"></i> Museum</span></div></div></div>
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/vaigai.jpg" alt="Vaigai River" class="place-img"></div><div class="card-content"><h4 class="place-title">Vaigai River</h4><p class="place-description">Lifeline of Madurai, perfect for evening walks and boat rides</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> All Day</span><span class="meta-tag"><i class="fas fa-tag"></i> Scenic</span></div></div></div>
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/koodal azhagar temple.jpg" alt="Koodal Azhagar Temple" class="place-img"></div><div class="card-content"><h4 class="place-title">Koodal Azhagar Temple</h4><p class="place-description">Ancient Vishnu temple with beautiful sculptures and architecture</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> 6 AM - 12 PM, 4 PM - 6 PM</span><span class="meta-tag"><i class="fas fa-tag"></i> Temple</span></div></div></div>
+                <div class="place-card"><div class="card-image"><img src="images/MADURAI/thirumalai.jpg" alt="Thirumalai Nayakkar Mahal" class="place-img"></div><div class="card-content"><h4 class="place-title">Thirumalai Nayakkar Mahal</h4><p class="place-description">Grand palace with impressive architecture and light & sound show</p><div class="card-meta"><span class="meta-time"><i class="fas fa-clock"></i> 9 AM - 5 PM</span><span class="meta-tag"><i class="fas fa-tag"></i> Palace</span></div></div></div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h3 class="section-title">Visitor Information</h3>
+            <div class="info-cards">
+                <div class="info-card"><i class="fas fa-clock info-icon"></i><h4 class="info-title">Best Time to Visit</h4><p class="info-text">October to March when weather is pleasant and cool</p></div>
+                <div class="info-card"><i class="fas fa-plane info-icon"></i><h4 class="info-title">How to Reach</h4><p class="info-text">Airport: Madurai International (IXM)<br>Railway: Madurai Junction</p></div>
+                <div class="info-card"><i class="fas fa-hotel info-icon"></i><h4 class="info-title">Stay Options</h4><p class="info-text">Heritage hotels, resorts, and budget accommodations</p></div>
+                <div class="info-card"><i class="fas fa-phone-alt info-icon"></i><h4 class="info-title">Tourist Helpline</h4><p class="info-text">+91 452 123 4567</p></div>
+            </div>
+        </section>
+
+        <section class="weather-section">
+            <h3 class="section-title">Current Weather</h3>
+            <div class="weather-widget">
+                <div class="weather-icon"><i class="fas fa-sun"></i></div>
+                <div class="weather-info"><span class="temperature">32°C</span><span class="weather-desc">Sunny</span></div>
+                <div class="weather-details"><span class="weather-wind"><i class="fas fa-wind"></i> 12 km/h</span><span class="weather-humidity"><i class="fas fa-tint"></i> 65%</span></div>
+            </div>
+        </section>
+
+        <section class="map-section">
+            <h3 class="map-title"><i class="fas fa-map-marked-alt"></i> Explore Madurai on Map</h3>
+            <div id="maduraiMap" class="map-container"></div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #ccc;">📍 Click markers – each place name has a unique bright color.</p>
+        </section>
+
+        <section class="newsletter-section">
+            <div class="newsletter-container">
+                <h3 class="newsletter-title">Discover More About Madurai</h3>
+                <p class="newsletter-text">Subscribe for travel tips, festival dates, and exclusive offers</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </main>
+
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo">
-                        <i class="fas fa-compass"></i>
-                        <span>City<span class="logo-highlight">Scope</span></span>
-                    </div>
+                    <div class="footer-logo"><i class="fas fa-compass"></i><span>City<span class="logo-highlight">Scope</span></span></div>
                     <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
@@ -146,17 +262,15 @@
                         <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-links">
                         <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
-                        <li><a href="index.html#destinations"><i class="fas fa-chevron-right"></i> Destinations</a></li>
-                        <li><a href="index.html#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Madurai</a></li>
+                        <li><a href="#places"><i class="fas fa-chevron-right"></i> Places to Visit</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Popular Cities</h4>
                     <ul class="footer-links">
@@ -167,24 +281,156 @@
                         <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Contact Info</h4>
                     <ul class="contact-info">
-                        <li><i class="fas fa-map-marker-alt"></i> Chennai, Tamil Nadu, India</li>
-                        <li><i class="fas fa-phone-alt"></i> +91 44 1234 5678</li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@cityscope.com">info@cityscope.com</a></li>
-                        <li><i class="fas fa-globe"></i> www.cityscope.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Madurai, Tamil Nadu, India</li>
+                        <li><i class="fas fa-phone-alt"></i> +91 452 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:madurai@cityscope.com">madurai@cityscope.com</a></li>
+                        <li><i class="fas fa-globe"></i> www.cityscope.com/madurai</li>
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
-                <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for travelers</p>
+                <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for heritage lovers</p>
             </div>
         </div>
     </footer>
 
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+    <div id="placesModal" class="places-modal">
+        <div class="places-modal-content">
+            <div class="places-modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Top 20+ Places in Madurai</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <ul class="places-list">
+                <li><i class="fas fa-temple"></i> Meenakshi Amman Temple</li>
+                <li><i class="fas fa-palace"></i> Thirumalai Nayakkar Palace</li>
+                <li><i class="fas fa-landmark"></i> Gandhi Memorial Museum</li>
+                <li><i class="fas fa-water"></i> Vaigai River</li>
+                <li><i class="fas fa-temple"></i> Koodal Azhagar Temple</li>
+                <li><i class="fas fa-monument"></i> Thirumalai Nayakkar Mahal</li>
+                <li><i class="fas fa-shopping-cart"></i> Puthu Mandapam</li>
+                <li><i class="fas fa-church"></i> St. Mary's Cathedral</li>
+                <li><i class="fas fa-music"></i> Madurai Tamil Sangam</li>
+                <li><i class="fas fa-tree"></i> Samanar Hills</li>
+                <li><i class="fas fa-tshirt"></i> Sungudi Saree Market</li>
+                <li><i class="fas fa-utensils"></i> Murugan Idli Shop</li>
+                <li><i class="fas fa-museum"></i> Eco Park</li>
+                <li><i class="fas fa-camera"></i> Goripalayam Dargah</li>
+                <li><i class="fas fa-road"></i> Athisayam Water Theme Park</li>
+                <li><i class="fas fa-leaf"></i> Pazhamudhir Solai</li>
+                <li><i class="fas fa-crown"></i> Rajaji Park</li>
+                <li><i class="fas fa-dragon"></i> Velliangiri Hills (nearby)</li>
+                <li><i class="fas fa-hotel"></i> Heritage Walk</li>
+                <li><i class="fas fa-sun"></i> Jallikattu Grounds</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchBtn = document.getElementById('globalSearchBtn');
+        
+        const cityPageMap = {
+            'chennai': 'chennai.html',
+            'madurai': 'madurai.html',
+            'thanjavur': 'thanjavur.html',
+            'ooty': 'ooty.html',
+            'kodaikanal': 'kodaikanal.html'
+        };
+        
+        function performGlobalSearch() {
+            let query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
+                return;
+            }
+            let matchedCity = null;
+            for (let city in cityPageMap) {
+                if (query.includes(city) || city.includes(query)) {
+                    matchedCity = city;
+                    break;
+                }
+            }
+            if (matchedCity) {
+                window.location.href = cityPageMap[matchedCity];
+            } else {
+                alert('City not found. Try: Chennai, Madurai, Thanjavur, Ooty, or Kodaikanal');
+            }
+        }
+        
+        if (searchBtn) {
+            searchBtn.addEventListener('click', performGlobalSearch);
+        }
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performGlobalSearch();
+                }
+            });
+        }
+
+        function initMap() {
+            var maduraiLat = 9.9252;
+            var maduraiLng = 78.1198;
+            var map = L.map('maduraiMap').setView([maduraiLat, maduraiLng], 13);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            var redIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<i class="fas fa-map-marker-alt" style="font-size: 32px; color: #ff4757; text-shadow: 0 0 5px white;"></i>',
+                iconSize: [32, 32],
+                popupAnchor: [0, -16]
+            });
+
+            var places = [
+                { name: "Meenakshi Amman Temple", lat: 9.9195, lng: 78.1193, icon: "fa-temple", color: "#ff6b6b" },
+                { name: "Thirumalai Nayakkar Palace", lat: 9.9145, lng: 78.1220, icon: "fa-palace", color: "#4ecdc4" },
+                { name: "Gandhi Memorial Museum", lat: 9.9288, lng: 78.1345, icon: "fa-landmark", color: "#ffe66d" },
+                { name: "Vaigai River", lat: 9.9400, lng: 78.1400, icon: "fa-water", color: "#a8e6cf" },
+                { name: "Koodal Azhagar Temple", lat: 9.9245, lng: 78.1280, icon: "fa-temple", color: "#ff8c42" }
+            ];
+
+            places.forEach(place => {
+                var marker = L.marker([place.lat, place.lng], { icon: redIcon }).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-family: 'Segoe UI', sans-serif; background: #1e1e2f; color: #fff; padding: 5px; border-radius: 8px;">
+                        <strong style="color: ${place.color}; font-size: 1.1rem;">${place.name}</strong><br>
+                        <i class="fas ${place.icon}" style="color: #4ecdc4;"></i> Must-visit spot in Madurai
+                    </div>
+                `, { className: 'custom-popup' });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+
+            const modal = document.getElementById('placesModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const showBtn = document.getElementById('showPlacesBtn');
+            if (modal && closeBtn && showBtn) {
+                showBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+                closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+                window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script src="js/madurai.js"></script>
 </body>
 </html>

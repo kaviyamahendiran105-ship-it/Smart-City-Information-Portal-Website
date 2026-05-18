@@ -4,25 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ooty - Queen of Hill Stations | CityScope</title>
-    <link rel="stylesheet" href="ooty-style.css">
-    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="css/ooty-style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .place-card .card-image {
+            width: 100%;
+            height: auto !important;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+            background-color: #f0f0f0;
+        }
+        .place-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .place-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        }
+        .card-content {
+            padding: 1.25rem;
+            flex: 1;
+        }
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .places-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .places-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .places-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .places-modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .close-modal:hover {
+            transform: scale(1.1);
+        }
+        .places-list {
+            padding: 1rem;
+            list-style: none;
+        }
+        .places-list li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        .places-list li i {
+            color: var(--primary-color);
+            width: 25px;
+        }
+        .places-list li:last-child {
+            border-bottom: none;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        #showPlacesBtn {
+            background: linear-gradient(135deg, #2e7d32, #ff9800);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #showPlacesBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46,125,50,0.4);
+        }
+
+        .map-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            height: 420px;
+            width: 100%;
+            z-index: 1;
+        }
+        .map-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 10px;
+            border-left: 4px solid #ff9800;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background: #1a1a2e;
+        }
+        .map-search-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .map-search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .map-search-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .map-search-btn:hover {
+            background: var(--secondary-color);
+        }
+    </style>
 </head>
 <body class="city-page">
 
-    <!-- Top Bar with Search and Navigation -->
     <div class="top-bar">
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search places...">
-            <button class="search-btn"><i class="fas fa-search"></i></button>
+            <input type="text" id="globalSearchInput" class="search-input" placeholder="Search places... (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
+            <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
-    <!-- Navigation Bar -->
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
-                <i class="fas fa-city"></i>
+                <i class="fas fa-compass"></i>
                 <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
             </div>
             <ul class="nav-links">
@@ -43,20 +229,18 @@
     </header>
 
     <main class="city-content">
-        <!-- Hero Section with Quick Facts -->
         <section class="city-hero" id="home">
             <h2 class="city-name">Ooty <span class="city-tagline">The Queen of Hill Stations</span></h2>
             <figure class="hero-image-container">
-                <img src="ooty.webp" alt="Ooty Hill Station" class="hero-image">
+                <img src="images/ooty.webp" alt="Ooty Hill Station" class="hero-image">
                 <figcaption class="image-caption">Scenic beauty of Ooty - Nilgiri Hills</figcaption>
             </figure>
             
-            <!-- Quick Facts Cards -->
             <div class="quick-facts">
                 <div class="fact-card">
                     <i class="fas fa-history fact-icon"></i>
                     <h4 class="fact-title">History</h4>
-                    <p class="fact-text">Ooty was discovered by the British in the early 19th century and served as the summer capital of the Madras Presidency. The name Ooty is short for Ootacamund, derived from the Badaga word "Udhagamandalam."</p>
+                    <p class="fact-text">Ooty was discovered by the British in the early 19th century and served as the summer capital of the Madras Presidency.</p>
                 </div>
                 <div class="fact-card">
                     <i class="fas fa-language fact-icon"></i>
@@ -71,7 +255,6 @@
             </div>
         </section>
 
-        <!-- About Section with Enhanced Info -->
         <section class="about-section" id="about">
             <h3 class="section-title">About Ooty</h3>
             <div class="about-content">
@@ -89,7 +272,6 @@
             </div>
         </section>
 
-        <!-- Why Visit Section -->
         <section class="highlights-section">
             <h3 class="section-title">Why Visit Ooty?</h3>
             <div class="highlights-grid">
@@ -120,17 +302,17 @@
                 <li class="highlight-item">Major tourist attraction with diverse activities</li>
                 <li class="highlight-item">UNESCO World Heritage mountain railway experience</li>
             </ul>
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="showPlacesBtn"><i class="fas fa-map-marker-alt"></i> Show 30+ Places in Ooty</button>
+            </div>
         </section>
 
-        <!-- Important Places Section -->
         <section class="places-section" id="places">
             <h3 class="section-title">Important Places</h3>
-            
-            <!-- Places Cards Grid -->
             <div class="places-grid">
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-water"></i>
+                        <img src="images/OOTY/lake-ooty.jpg" alt="Ooty Lake" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Ooty Lake</h4>
@@ -141,10 +323,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-seedling"></i>
+                        <img src="images/OOTY/botanical-ooty.jpg" alt="Botanical Garden" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Botanical Garden</h4>
@@ -155,10 +336,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-mountain"></i>
+                        <img src="images/OOTY/Doddabetta Peak-ooty.jpg" alt="Doddabetta Peak" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Doddabetta Peak</h4>
@@ -169,10 +349,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-train"></i>
+                        <img src="images/OOTY/Nilgiri Mountain Railway-ooty.jpg" alt="Nilgiri Mountain Railway" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Nilgiri Mountain Railway</h4>
@@ -183,10 +362,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-tree"></i>
+                        <img src="images/OOTY/Pine Forest-ooty.jpg" alt="Pine Forest" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Pine Forest</h4>
@@ -197,10 +375,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-museum"></i>
+                        <img src="images/OOTY/Tea Museum-ooty.jpg" alt="Tea Museum" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Tea Museum</h4>
@@ -214,7 +391,6 @@
             </div>
         </section>
 
-        <!-- Visitor Information -->
         <section class="info-section">
             <h3 class="section-title">Visitor Information</h3>
             <div class="info-cards">
@@ -241,13 +417,10 @@
             </div>
         </section>
 
-        <!-- Weather Widget -->
         <section class="weather-section">
             <h3 class="section-title">Current Weather</h3>
             <div class="weather-widget">
-                <div class="weather-icon">
-                    <i class="fas fa-cloud-sun"></i>
-                </div>
+                <div class="weather-icon"><i class="fas fa-cloud-sun"></i></div>
                 <div class="weather-info">
                     <span class="temperature">18°C</span>
                     <span class="weather-desc">Pleasant Breeze</span>
@@ -259,7 +432,16 @@
             </div>
         </section>
 
-        <!-- Newsletter Signup -->
+        <section class="map-section">
+            <h3 class="map-title"><i class="fas fa-map-marked-alt"></i> Explore Ooty on Map</h3>
+            <div class="map-search-wrapper">
+                <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search for a place in Ooty (e.g., Doddabetta, Pykara, Rose Garden)">
+                <button id="mapSearchBtn" class="map-search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+            <div id="ootyMap" class="map-container"></div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #2c3e50;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
+        </section>
+
         <section class="newsletter-section">
             <div class="newsletter-container">
                 <h3 class="newsletter-title">Discover More About Ooty</h3>
@@ -271,19 +453,17 @@
             </div>
         </section>
 
-        <!-- Back Link -->
         <div style="text-align: center;">
             <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <i class="fas fa-mountain"></i>
+                        <i class="fas fa-compass"></i>
                         <span>City<span class="logo-highlight">Scope</span></span>
                     </div>
                     <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
@@ -294,7 +474,6 @@
                         <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-links">
@@ -304,7 +483,6 @@
                         <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Popular Cities</h4>
                     <ul class="footer-links">
@@ -315,7 +493,6 @@
                         <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Contact Info</h4>
                     <ul class="contact-info">
@@ -326,7 +503,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
                 <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for nature lovers</p>
@@ -334,14 +510,208 @@
         </div>
     </footer>
 
-    <!-- CSS-only Back to Top Link -->
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- Mobile Menu Script -->
+    <div id="placesModal" class="places-modal">
+        <div class="places-modal-content">
+            <div class="places-modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Top 30+ Places in Ooty & Nilgiris</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <ul class="places-list">
+                <li><i class="fas fa-water"></i> Ooty Lake</li>
+                <li><i class="fas fa-seedling"></i> Botanical Garden</li>
+                <li><i class="fas fa-mountain"></i> Doddabetta Peak</li>
+                <li><i class="fas fa-train"></i> Nilgiri Mountain Railway</li>
+                <li><i class="fas fa-tree"></i> Pine Forest</li>
+                <li><i class="fas fa-museum"></i> Tea Museum</li>
+                <li><i class="fas fa-water"></i> Pykara Lake & Falls</li>
+                <li><i class="fas fa-leaf"></i> Emerald Lake</li>
+                <li><i class="fas fa-water"></i> Avalanche Lake</li>
+                <li><i class="fas fa-bridge"></i> Kalhatty Falls</li>
+                <li><i class="fas fa-camera"></i> Ketti Valley View</li>
+                <li><i class="fas fa-church"></i> St. Stephen's Church</li>
+                <li><i class="fas fa-cloud-sun"></i> Wenlock Downs</li>
+                <li><i class="fas fa-tree"></i> Sims Park (Coonoor)</li>
+                <li><i class="fas fa-crown"></i> Lamb's Rock</li>
+                <li><i class="fas fa-camera"></i> Shooting Point</li>
+                <li><i class="fas fa-hiking"></i> Glenmorgan Viewpoint</li>
+                <li><i class="fas fa-road"></i> Mudumalai National Park</li>
+                <li><i class="fas fa-dragon"></i> Tiger Hill</li>
+                <li><i class="fas fa-snowflake"></i> Dolphin's Nose</li>
+                <li><i class="fas fa-church"></i> Lovedale Church</li>
+                <li><i class="fas fa-water"></i> Catherine Falls</li>
+                <li><i class="fas fa-fort"></i> Droog Fort</li>
+                <li><i class="fas fa-eye"></i> Kodanad View Point</li>
+                <li><i class="fas fa-mountain"></i> Rangaswamy Peak</li>
+                <li><i class="fas fa-needle"></i> Needle Rock View Point</li>
+                <li><i class="fas fa-tree"></i> Elk Hill</li>
+                <li><i class="fas fa-rose"></i> Government Rose Garden</li>
+                <li><i class="fas fa-thread"></i> Thread Garden</li>
+                <li><i class="fas fa-landmark"></i> Wax World Museum</li>
+                <li><i class="fas fa-palace"></i> Fern Hill Palace</li>
+                <li><i class="fas fa-home"></i> Stone House</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
+
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchBtn = document.getElementById('globalSearchBtn');
+        const cityPageMap = {
+            'chennai': 'chennai.html',
+            'madurai': 'madurai.html',
+            'thanjavur': 'thanjavur.html',
+            'ooty': 'ooty.html',
+            'kodaikanal': 'kodaikanal.html'
+        };
+        
+        function performGlobalSearch() {
+            let query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
+                return;
+            }
+            let matchedCity = null;
+            for (let city in cityPageMap) {
+                if (query.includes(city) || city.includes(query)) {
+                    matchedCity = city;
+                    break;
+                }
+            }
+            if (matchedCity) {
+                window.location.href = cityPageMap[matchedCity];
+            } else {
+                alert('City not found. Try: Chennai, Madurai, Thanjavur, Ooty, or Kodaikanal');
+            }
+        }
+        
+        if (searchBtn) {
+            searchBtn.addEventListener('click', performGlobalSearch);
+        }
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performGlobalSearch();
+                }
+            });
+        }
+
+        let map;
+        let markersGroup = [];
+
+        function initOotyMap() {
+            const ootyCenter = [11.4102, 76.6950];
+            map = L.map('ootyMap').setView(ootyCenter, 12);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            const redIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<i class="fas fa-map-marker-alt" style="font-size: 32px; color: #ff4757; text-shadow: 0 0 5px white;"></i>',
+                iconSize: [32, 32],
+                popupAnchor: [0, -16]
+            });
+
+            const ootySpots = [
+                { name: "Ooty Lake", lat: 11.4012, lng: 76.6935, icon: "fa-water", color: "#4ecdc4" },
+                { name: "Botanical Garden", lat: 11.4192, lng: 76.6983, icon: "fa-seedling", color: "#a8e6cf" },
+                { name: "Doddabetta Peak", lat: 11.4010, lng: 76.7360, icon: "fa-mountain", color: "#ff8c42" },
+                { name: "Nilgiri Mountain Railway", lat: 11.4087, lng: 76.6998, icon: "fa-train", color: "#ffe66d" },
+                { name: "Pine Forest", lat: 11.3762, lng: 76.6712, icon: "fa-tree", color: "#6b5b95" },
+                { name: "Tea Museum", lat: 11.3578, lng: 76.7425, icon: "fa-museum", color: "#d64161" },
+                { name: "Pykara Lake & Falls", lat: 11.4850, lng: 76.5870, icon: "fa-water", color: "#1abc9c" },
+                { name: "Emerald Lake", lat: 11.3270, lng: 76.6370, icon: "fa-leaf", color: "#2ecc71" },
+                { name: "Avalanche Lake", lat: 11.3150, lng: 76.5920, icon: "fa-water", color: "#3498db" },
+                { name: "Kalhatty Falls", lat: 11.4530, lng: 76.6580, icon: "fa-bridge", color: "#e67e22" },
+                { name: "Ketti Valley View", lat: 11.3810, lng: 76.7150, icon: "fa-camera", color: "#f39c12" },
+                { name: "St. Stephen's Church", lat: 11.4120, lng: 76.6920, icon: "fa-church", color: "#9b59b6" },
+                { name: "Wenlock Downs", lat: 11.3880, lng: 76.6830, icon: "fa-cloud-sun", color: "#f1c40f" },
+                { name: "Sims Park (Coonoor)", lat: 11.3510, lng: 76.8100, icon: "fa-tree", color: "#e84393" },
+                { name: "Lamb's Rock", lat: 11.3740, lng: 76.8100, icon: "fa-crown", color: "#fd79a8" },
+                { name: "Shooting Point", lat: 11.3580, lng: 76.7450, icon: "fa-camera", color: "#e67e22" },
+                { name: "Glenmorgan Viewpoint", lat: 11.3900, lng: 76.6800, icon: "fa-hiking", color: "#16a085" },
+                { name: "Mudumalai National Park", lat: 11.6000, lng: 76.5500, icon: "fa-road", color: "#27ae60" },
+                { name: "Tiger Hill", lat: 11.4200, lng: 76.7100, icon: "fa-dragon", color: "#c0392b" },
+                { name: "Dolphin's Nose", lat: 11.3680, lng: 76.8050, icon: "fa-snowflake", color: "#2980b9" },
+                { name: "Lovedale Church", lat: 11.4070, lng: 76.6880, icon: "fa-church", color: "#8e44ad" },
+                { name: "Catherine Falls", lat: 11.3110, lng: 76.8110, icon: "fa-water", color: "#1abc9c" },
+                { name: "Droog Fort", lat: 11.3540, lng: 76.7910, icon: "fa-fort", color: "#f39c12" },
+                { name: "Kodanad View Point", lat: 11.4240, lng: 76.7370, icon: "fa-eye", color: "#3498db" },
+                { name: "Rangaswamy Peak", lat: 11.4350, lng: 76.7410, icon: "fa-mountain", color: "#9b59b6" },
+                { name: "Needle Rock View Point", lat: 11.3770, lng: 76.8000, icon: "fa-needle", color: "#e67e22" },
+                { name: "Elk Hill", lat: 11.3910, lng: 76.7070, icon: "fa-tree", color: "#2ecc71" },
+                { name: "Government Rose Garden", lat: 11.4080, lng: 76.7010, icon: "fa-rose", color: "#ff6b6b" },
+                { name: "Thread Garden", lat: 11.4075, lng: 76.7020, icon: "fa-thread", color: "#a8e6cf" },
+                { name: "Wax World Museum", lat: 11.4060, lng: 76.7000, icon: "fa-landmark", color: "#4ecdc4" },
+                { name: "Fern Hill Palace", lat: 11.4100, lng: 76.6900, icon: "fa-palace", color: "#ffe66d" },
+                { name: "Stone House", lat: 11.4090, lng: 76.6930, icon: "fa-home", color: "#d64161" }
+            ];
+
+            ootySpots.forEach(spot => {
+                const marker = L.marker([spot.lat, spot.lng], { icon: redIcon }).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-family: 'Segoe UI', sans-serif; background: #1e1e2f; color: #fff; padding: 5px; border-radius: 8px;">
+                        <strong style="color: ${spot.color}; font-size: 1.1rem;">${spot.name}</strong><br>
+                        <i class="fas ${spot.icon}" style="color: #ff9800;"></i> Must-visit spot in Ooty
+                    </div>
+                `, { className: 'custom-popup' });
+                markersGroup.push({ marker: marker, name: spot.name.toLowerCase(), lat: spot.lat, lng: spot.lng });
+            });
+        }
+
+        function searchPlaceOnMap(query) {
+            if (!query.trim()) {
+                alert("Please enter a place name to search.");
+                return;
+            }
+            const lowerQuery = query.toLowerCase();
+            const found = markersGroup.find(item => item.name.includes(lowerQuery));
+            if (found) {
+                map.setView([found.lat, found.lng], 14);
+                found.marker.openPopup();
+            } else {
+                alert(`No place found matching "${query}". Try: Doddabetta, Pykara, Rose Garden, etc.`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initOotyMap();
+
+            const modal = document.getElementById('placesModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const showBtn = document.getElementById('showPlacesBtn');
+            if (modal && closeBtn && showBtn) {
+                showBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+                closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+                window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+            }
+
+            const mapSearchBtn = document.getElementById('mapSearchBtn');
+            const mapSearchInput = document.getElementById('mapSearchInput');
+            if (mapSearchBtn && mapSearchInput) {
+                mapSearchBtn.addEventListener('click', () => {
+                    searchPlaceOnMap(mapSearchInput.value);
+                });
+                mapSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchPlaceOnMap(mapSearchInput.value);
+                    }
+                });
+            }
+        });
     </script>
+    <script src="script.js"></script>
+    <script src="js/ooty.js"></script>
 </body>
 </html>

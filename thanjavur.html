@@ -2,27 +2,249 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Thanjavur - Land of Temples | CityScope</title>
-    <link rel="stylesheet" href="thanjavur-style.css">
+    <link rel="stylesheet" href="css/thanjavur-style.css">
+    <!-- Leaflet CSS for Map (added) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .places-section .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .places-section .place-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .places-section .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        }
+        .places-section .card-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+        }
+        .places-section .place-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .places-section .place-card:hover .place-img {
+            transform: scale(1.03);
+        }
+        .places-section .card-content {
+            padding: 1.2rem;
+            flex: 1;
+        }
+        .places-section .place-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .places-section .place-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .places-section .card-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+        .places-section .card-meta i {
+            margin-right: 0.3rem;
+        }
+        @media (max-width: 768px) {
+            .places-section .places-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .map-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            height: 420px;
+            width: 100%;
+            z-index: 1;
+        }
+        .map-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        .custom-popup .leaflet-popup-content-wrapper {
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 10px;
+            border-left: 4px solid #ff9800;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background: #1a1a2e;
+        }
+
+        .map-search-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .map-search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .map-search-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .map-search-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .places-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .places-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .places-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .places-modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .close-modal:hover {
+            transform: scale(1.1);
+        }
+        .places-list {
+            padding: 1rem;
+            list-style: none;
+        }
+        .places-list li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        .places-list li i {
+            color: var(--primary-color);
+            width: 25px;
+        }
+        .places-list li:last-child {
+            border-bottom: none;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        #showPlacesBtn {
+            background: linear-gradient(135deg, #2e7d32, #ff9800);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #showPlacesBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46,125,50,0.4);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .place-card, .highlight-card, .fact-card, .info-card {
+            will-change: auto;
+        }
+        .city-content {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body class="city-page">
 
-    <!-- Top Bar with Search and Navigation -->
     <div class="top-bar">
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search places...">
-            <button class="search-btn"><i class="fas fa-search"></i></button>
+            <input type="text" id="globalSearchInput" class="search-input" placeholder="Search places... (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
+            <button class="search-btn" id="globalSearchBtn"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
-    <!-- Navigation Bar -->
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
-                <i class="fas fa-archway"></i>
+                <i class="fas fa-compass"></i>
                 <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
             </div>
             <ul class="nav-links">
@@ -43,15 +265,12 @@
     </header>
 
     <main class="city-content">
-        <!-- Hero Section with Quick Facts -->
         <section class="city-hero" id="home">
             <h2 class="city-name">Thanjavur <span class="city-tagline">The Granary of South India</span></h2>
             <figure class="hero-image-container">
-                <img src="thanjavur.jpeg" alt="Thanjavur Brihadeeswarar Temple" class="hero-image">
+                <img src="images/thanjavur.jpeg" alt="Thanjavur Brihadeeswarar Temple" class="hero-image">
                 <figcaption class="image-caption">Brihadeeswarar Temple - A magnificent Chola architecture</figcaption>
             </figure>
-            
-            <!-- Quick Facts Cards -->
             <div class="quick-facts">
                 <div class="fact-card">
                     <i class="fas fa-history fact-icon"></i>
@@ -71,7 +290,6 @@
             </div>
         </section>
 
-        <!-- About Section with Enhanced Info -->
         <section class="about-section" id="about">
             <h3 class="section-title">About Thanjavur</h3>
             <div class="about-content">
@@ -89,7 +307,6 @@
             </div>
         </section>
 
-        <!-- Why Visit Section -->
         <section class="highlights-section">
             <h3 class="section-title">Why Visit Thanjavur?</h3>
             <div class="highlights-grid">
@@ -120,17 +337,17 @@
                 <li class="highlight-item">Famous Chola history and dynasty legacy</li>
                 <li class="highlight-item">UNESCO World Heritage temple complex</li>
             </ul>
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="showPlacesBtn"><i class="fas fa-map-marker-alt"></i> Show 20+ Places in Thanjavur</button>
+            </div>
         </section>
 
-        <!-- Important Places Section -->
         <section class="places-section" id="places">
             <h3 class="section-title">Must-Visit Places</h3>
-            
-            <!-- Places Cards Grid -->
             <div class="places-grid">
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-temple"></i>
+                        <img src="images/THANJAVUR/brindheeshwar.jpg" alt="Brihadeeswarar Temple" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Brihadeeswarar Temple</h4>
@@ -141,10 +358,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-landmark"></i>
+                        <img src="images/THANJAVUR/Thanjavur_Maratha_Palace.jpg" alt="Thanjavur Palace" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Thanjavur Palace</h4>
@@ -155,10 +371,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-book"></i>
+                        <img src="images/THANJAVUR/Sarasvati-Mahal-Library.jpg" alt="Saraswathi Mahal Library" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Saraswathi Mahal Library</h4>
@@ -169,10 +384,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-palette"></i>
+                        <img src="images/THANJAVUR/Art Gallery.jpg" alt="Art Gallery" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Art Gallery</h4>
@@ -183,10 +397,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-city"></i>
+                        <img src="images/THANJAVUR/Schwartz Church.jpg" alt="Schwartz Church" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Schwartz Church</h4>
@@ -197,10 +410,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="place-card">
                     <div class="card-image">
-                        <i class="fas fa-drum"></i>
+                        <img src="images/THANJAVUR/Thanjavur Doll Factory.jpg" alt="Thanjavur Doll Factory" class="place-img">
                     </div>
                     <div class="card-content">
                         <h4 class="place-title">Thanjavur Doll Factory</h4>
@@ -214,7 +426,6 @@
             </div>
         </section>
 
-        <!-- Visitor Information -->
         <section class="info-section">
             <h3 class="section-title">Visitor Information</h3>
             <div class="info-cards">
@@ -241,7 +452,6 @@
             </div>
         </section>
 
-        <!-- Weather Widget -->
         <section class="weather-section">
             <h3 class="section-title">Current Weather</h3>
             <div class="weather-widget">
@@ -259,7 +469,16 @@
             </div>
         </section>
 
-        <!-- Newsletter Signup -->
+        <section class="map-section">
+            <h3 class="map-title"><i class="fas fa-map-marked-alt"></i> Explore Thanjavur on Map</h3>
+            <div class="map-search-wrapper">
+                <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search for a place in Thanjavur (e.g., Big Temple, Palace, Darasuram)">
+                <button id="mapSearchBtn" class="map-search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+            <div id="thanjavurMap" class="map-container"></div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #2c3e50;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
+        </section>
+
         <section class="newsletter-section">
             <div class="newsletter-container">
                 <h3 class="newsletter-title">Discover More About Thanjavur</h3>
@@ -271,19 +490,17 @@
             </div>
         </section>
 
-        <!-- Back Link -->
         <div style="text-align: center;">
             <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
     </main>
 
-    <!-- Enhanced Footer matching index.html style with sandal, yellow, orange shades -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <i class="fas fa-archway"></i>
+                        <i class="fas fa-compass"></i>
                         <span>City<span class="logo-highlight">Scope</span></span>
                     </div>
                     <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
@@ -294,7 +511,6 @@
                         <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-links">
@@ -304,7 +520,6 @@
                         <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Popular Cities</h4>
                     <ul class="footer-links">
@@ -315,7 +530,6 @@
                         <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4 class="footer-title">Contact Info</h4>
                     <ul class="contact-info">
@@ -326,7 +540,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
                 <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ffa500;"></i> for heritage lovers</p>
@@ -334,14 +547,183 @@
         </div>
     </footer>
 
-    <!-- CSS-only Back to Top Link -->
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- Mobile Menu Script -->
+    <div id="placesModal" class="places-modal">
+        <div class="places-modal-content">
+            <div class="places-modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Top 20+ Places in Thanjavur</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <ul class="places-list">
+                <li><i class="fas fa-temple"></i> Brihadeeswarar Temple (Big Temple)</li>
+                <li><i class="fas fa-landmark"></i> Thanjavur Maratha Palace</li>
+                <li><i class="fas fa-book"></i> Saraswathi Mahal Library</li>
+                <li><i class="fas fa-palette"></i> Art Gallery (Palace Complex)</li>
+                <li><i class="fas fa-church"></i> Schwartz Church</li>
+                <li><i class="fas fa-shopping-cart"></i> Thanjavur Doll Factory</li>
+                <li><i class="fas fa-temple"></i> Gangaikonda Cholapuram Temple</li>
+                <li><i class="fas fa-temple"></i> Darasuram Airavatesvara Temple</li>
+                <li><i class="fas fa-tree"></i> Sivaganga Park</li>
+                <li><i class="fas fa-fort-awesome"></i> Raja Raja Chola's Fort</li>
+                <li><i class="fas fa-temple"></i> Punnainallur Mariamman Temple</li>
+                <li><i class="fas fa-museum"></i> Thanjavur Royal Museum</li>
+                <li><i class="fas fa-music"></i> Thiruvaiyaru (Pancharathna Krithi)</li>
+                <li><i class="fas fa-city"></i> Kumbakonam (nearby temple town)</li>
+                <li><i class="fas fa-water"></i> Mahamaham Tank (Kumbakonam)</li>
+                <li><i class="fas fa-train"></i> Thanjavur Junction Railway Heritage</li>
+                <li><i class="fas fa-sculpture"></i> Bronze Casting Workshop</li>
+                <li><i class="fas fa-paint-brush"></i> Thanjavur Painting Studio</li>
+                <li><i class="fas fa-utensils"></i> Local Food Street (Shanmugham Salai)</li>
+                <li><i class="fas fa-hiking"></i> Poondi Matha Basilica (nearby)</li>
+                <li><i class="fas fa-dragon"></i> Thirubuvanam Temple (nearby)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
+
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchBtn = document.getElementById('globalSearchBtn');
+        const cityPageMap = {
+            'chennai': 'chennai.html',
+            'madurai': 'madurai.html',
+            'thanjavur': 'thanjavur.html',
+            'ooty': 'ooty.html',
+            'kodaikanal': 'kodaikanal.html'
+        };
+        
+        function performGlobalSearch() {
+            let query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
+                return;
+            }
+            let matchedCity = null;
+            for (let city in cityPageMap) {
+                if (query.includes(city) || city.includes(query)) {
+                    matchedCity = city;
+                    break;
+                }
+            }
+            if (matchedCity) {
+                window.location.href = cityPageMap[matchedCity];
+            } else {
+                alert('City not found. Try: Chennai, Madurai, Thanjavur, Ooty, or Kodaikanal');
+            }
+        }
+        
+        if (searchBtn) {
+            searchBtn.addEventListener('click', performGlobalSearch);
+        }
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performGlobalSearch();
+                }
+            });
+        }
+
+        let map;
+        let markersGroup = [];
+
+        function initThanjavurMap() {
+            const thanjavurCenter = [10.7870, 79.1378];
+            map = L.map('thanjavurMap').setView(thanjavurCenter, 12);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            const redIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<i class="fas fa-map-marker-alt" style="font-size: 32px; color: #ff4757; text-shadow: 0 0 5px white;"></i>',
+                iconSize: [32, 32],
+                popupAnchor: [0, -16]
+            });
+
+            const thanjavurSpots = [
+                { name: "Brihadeeswarar Temple (Big Temple)", lat: 10.7828, lng: 79.1317, icon: "fa-temple", color: "#ff8c42" },
+                { name: "Thanjavur Maratha Palace", lat: 10.7900, lng: 79.1390, icon: "fa-landmark", color: "#ffe66d" },
+                { name: "Saraswathi Mahal Library", lat: 10.7895, lng: 79.1385, icon: "fa-book", color: "#4ecdc4" },
+                { name: "Art Gallery (Palace Complex)", lat: 10.7892, lng: 79.1380, icon: "fa-palette", color: "#a8e6cf" },
+                { name: "Schwartz Church", lat: 10.7940, lng: 79.1410, icon: "fa-church", color: "#6b5b95" },
+                { name: "Thanjavur Doll Factory", lat: 10.7865, lng: 79.1400, icon: "fa-shopping-cart", color: "#d64161" },
+                { name: "Gangaikonda Cholapuram Temple", lat: 11.2030, lng: 79.4470, icon: "fa-temple", color: "#f39c12" },
+                { name: "Darasuram Airavatesvara Temple", lat: 10.9480, lng: 79.3570, icon: "fa-temple", color: "#2ecc71" },
+                { name: "Sivaganga Park", lat: 10.7880, lng: 79.1360, icon: "fa-tree", color: "#1abc9c" },
+                { name: "Raja Raja Chola's Fort", lat: 10.7800, lng: 79.1300, icon: "fa-fort-awesome", color: "#e67e22" },
+                { name: "Punnainallur Mariamman Temple", lat: 10.7680, lng: 79.1520, icon: "fa-temple", color: "#9b59b6" },
+                { name: "Thanjavur Royal Museum", lat: 10.7898, lng: 79.1395, icon: "fa-museum", color: "#3498db" },
+                { name: "Thiruvaiyaru", lat: 10.8820, lng: 79.1040, icon: "fa-music", color: "#fd79a8" },
+                { name: "Kumbakonam", lat: 10.9620, lng: 79.3880, icon: "fa-city", color: "#f1c40f" },
+                { name: "Mahamaham Tank (Kumbakonam)", lat: 10.9600, lng: 79.3860, icon: "fa-water", color: "#e84393" },
+                { name: "Poondi Matha Basilica", lat: 10.8400, lng: 79.1900, icon: "fa-church", color: "#c0392b" },
+                { name: "Thirubuvanam Temple", lat: 10.9880, lng: 79.4170, icon: "fa-temple", color: "#16a085" },
+                { name: "Swamimalai (nearby temple)", lat: 10.9560, lng: 79.3290, icon: "fa-temple", color: "#2980b9" }
+            ];
+
+            thanjavurSpots.forEach(spot => {
+                const marker = L.marker([spot.lat, spot.lng], { icon: redIcon }).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-family: 'Segoe UI', sans-serif; background: #1e1e2f; color: #fff; padding: 5px; border-radius: 8px;">
+                        <strong style="color: ${spot.color}; font-size: 1.1rem;">${spot.name}</strong><br>
+                        <i class="fas ${spot.icon}" style="color: #ff9800;"></i> Must-visit in Thanjavur region
+                    </div>
+                `, { className: 'custom-popup' });
+                markersGroup.push({ marker: marker, name: spot.name.toLowerCase(), lat: spot.lat, lng: spot.lng });
+            });
+        }
+
+        function searchPlaceOnMap(query) {
+            if (!query.trim()) {
+                alert("Please enter a place name to search.");
+                return;
+            }
+            const lowerQuery = query.toLowerCase();
+            const found = markersGroup.find(item => item.name.includes(lowerQuery));
+            if (found) {
+                map.setView([found.lat, found.lng], 14);
+                found.marker.openPopup();
+            } else {
+                alert(`No place found matching "${query}". Try: Big Temple, Palace, Darasuram, etc.`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initThanjavurMap();
+
+            const modal = document.getElementById('placesModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const showBtn = document.getElementById('showPlacesBtn');
+            if (modal && closeBtn && showBtn) {
+                showBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+                closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+                window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+            }
+
+            const mapSearchBtn = document.getElementById('mapSearchBtn');
+            const mapSearchInput = document.getElementById('mapSearchInput');
+            if (mapSearchBtn && mapSearchInput) {
+                mapSearchBtn.addEventListener('click', () => {
+                    searchPlaceOnMap(mapSearchInput.value);
+                });
+                mapSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchPlaceOnMap(mapSearchInput.value);
+                    }
+                });
+            }
+        });
     </script>
+    <script src="script.js"></script>
+    <script src="js/thanjavur.js"></script>
 </body>
 </html>

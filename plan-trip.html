@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityScope - Plan Your Trip</title>
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="css/plan_trip.css">
+</head>
+<body>
+
+    <!-- Navigation Bar (logo style updated) -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-compass"></i>
+                <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="destinations.html" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link login-btn">Login</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                <label for="menu-toggle" class="mobile-menu-btn"><i class="fas fa-bars"></i></label>
+                <div class="mobile-menu-dropdown">
+                    <a href="index.html" class="mobile-link">Home</a>
+                    <a href="destinations.html" class="mobile-link">Destinations</a>
+                    <a href="about.html" class="mobile-link">About</a>
+                    <a href="login.html" class="mobile-link login-mobile">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="trip-container">
+            <!-- User info bar -->
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <div class="user-details">
+                    <strong>kaviya mahendiran</strong><br>
+                    chennai | kaviyamahendiran105@gmail.com
+                </div>
+            </div>
+
+            <div class="trip-card">
+                <div class="trip-header">
+                    <span class="trip-badge">Let's Plan Your Trip</span>
+                    <h1>Plan Your Perfect Journey</h1>
+                    <div class="title-underline"></div>
+                </div>
+
+                <form id="tripForm" class="trip-form">
+                    <!-- Month of Visit -->
+                    <div class="form-group">
+                        <label for="month" class="form-label">
+                            <i class="fas fa-calendar-alt"></i> Month of Visits <span class="required">*</span>
+                        </label>
+                        <select id="month" name="month" class="form-input">
+                            <option value="">Select month</option>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                        <div class="error-msg" id="monthError"></div>
+                    </div>
+
+                    <!-- Budget -->
+                    <div class="form-group">
+                        <label for="budget" class="form-label">
+                            <i class="fas fa-rupee-sign"></i> Budget <span class="required">*</span>
+                        </label>
+                        <input type="number" id="budget" name="budget" class="form-input" step="1" min="1" placeholder="e.g., 5000">
+                        <div class="error-msg" id="budgetError"></div>
+                    </div>
+
+                    <!-- Number of Travellers -->
+                    <div class="form-group">
+                        <label for="travellers" class="form-label">
+                            <i class="fas fa-users"></i> No. of Travellers <span class="required">*</span>
+                        </label>
+                        <input type="number" id="travellers" name="travellers" class="form-input" min="1" placeholder="e.g., 2">
+                        <div class="error-msg" id="travellersError"></div>
+                    </div>
+
+                    <!-- Hotel (optional) -->
+                    <div class="form-group">
+                        <label for="hotel" class="form-label">
+                            <i class="fas fa-hotel"></i> Hotel ▼
+                        </label>
+                        <select id="hotel" name="hotel" class="form-input">
+                            <option value="">Select hotel (optional)</option>
+                            <option value="Budget">Budget</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Luxury">Luxury</option>
+                        </select>
+                        <div class="error-msg" id="hotelError"></div>
+                    </div>
+
+                    <!-- Arrival & Departure City -->
+                    <div class="form-group">
+                        <label for="city" class="form-label">
+                            <i class="fas fa-city"></i> Arrival & Departure City <span class="required">*</span>
+                        </label>
+                        <input type="text" id="city" name="city" class="form-input" placeholder="e.g., Chennai">
+                        <div class="error-msg" id="cityError"></div>
+                    </div>
+
+                    <!-- Your Requirement -->
+                    <div class="form-group">
+                        <label for="requirement" class="form-label">
+                            <i class="fas fa-pen-alt"></i> Your Requirement <span class="required">*</span>
+                        </label>
+                        <textarea id="requirement" name="requirement" rows="4" class="form-input" placeholder="Tell us about your preferences..."></textarea>
+                        <div class="error-msg" id="requirementError"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (dark blue theme) -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-compass"></i>
+                        <span>City<span class="logo-highlight">Scope</span></span>
+                    </div>
+                    <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="destinations.html"><i class="fas fa-chevron-right"></i> Destinations</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Popular Cities</h4>
+                    <ul class="footer-links">
+                        <li><a href="chennai.html"><i class="fas fa-chevron-right"></i> Chennai</a></li>
+                        <li><a href="madurai.html"><i class="fas fa-chevron-right"></i> Madurai</a></li>
+                        <li><a href="thanjavur.html"><i class="fas fa-chevron-right"></i> Thanjavur</a></li>
+                        <li><a href="ooty.html"><i class="fas fa-chevron-right"></i> Ooty</a></li>
+                        <li><a href="kodaikanal.html"><i class="fas fa-chevron-right"></i> Kodaikanal</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Chennai, Tamil Nadu, India</li>
+                        <li><i class="fas fa-phone-alt"></i> +91 44 1234 5678</li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@cityscope.com">info@cityscope.com</a></li>
+                        <li><i class="fas fa-globe"></i> www.cityscope.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
+                <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for travelers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="JS/plan_trip.js"></script>
+</body>
+</html>

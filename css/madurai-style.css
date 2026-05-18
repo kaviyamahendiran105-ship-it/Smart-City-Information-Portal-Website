@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/* ===== MADURAI CSS – FULL EFFECTS (inspired by Ooty page) ===== */
 * {
     margin: 0;
     padding: 0;
@@ -7,16 +7,16 @@
 
 :root {
     /* Blue gradient color palette for Madurai - inspired by sky and temples */
-    --primary-color: #4361ee;      /* Royal blue - primary brand color */
-    --primary-light: #6c8cff;       /* Light blue - gradients */
-    --secondary-color: #3a56c8;     /* Deep blue - secondary */
-    --secondary-light: #5b7cfa;      /* Medium blue */
-    --accent-color: #4cc9f0;         /* Sky blue - accent */
-    --accent-light: #a2d6f9;          /* Light sky blue */
-    --tertiary-color: #2b3d8f;       /* Dark blue - deep tones */
-    --text-dark: #1e2b4f;            /* Navy blue - for text */
-    --text-light: #f0f7ff;            /* Off-white with blue tint */
-    --bg-light: #e8f0fe;               /* Light blue background */
+    --primary-color: #4361ee;      /* Royal blue */
+    --primary-light: #6c8cff;
+    --secondary-color: #3a56c8;    /* Deep blue */
+    --secondary-light: #5b7cfa;
+    --accent-color: #4cc9f0;       /* Sky blue */
+    --accent-light: #a2d6f9;
+    --tertiary-color: #2b3d8f;     /* Dark blue */
+    --text-dark: #1e2b4f;
+    --text-light: #f0f7ff;
+    --bg-light: #e8f0fe;
     --white: #ffffff;
     --shadow: 0 4px 12px rgba(67, 97, 238, 0.15);
     --shadow-sm: 0 5px 15px rgba(67, 97, 238, 0.1);
@@ -140,25 +140,31 @@ body::before {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(6,214,160,0.1));
+    padding: 5px 15px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-sm);
 }
 
 .logo i {
     color: var(--primary-color);
     font-size: 28px;
-    filter: drop-shadow(0 2px 5px rgba(67, 97, 238, 0.3));
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .logo-text {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-dark);
 }
 
 .logo-highlight {
-    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -321,7 +327,7 @@ body::before {
     border-top: 1px solid var(--border-color);
 }
 
-/* Quick Facts Cards */
+/* Quick Facts Cards with SHINE ANIMATION (from Ooty) */
 .quick-facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -353,15 +359,24 @@ body::before {
     transition: var(--transition);
 }
 
+/* Shine animation */
 .fact-card::after {
     content: '';
     position: absolute;
-    bottom: -50%;
-    right: -50%;
+    top: -50%;
+    left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(67, 97, 238, 0.03) 0%, transparent 70%);
+    background: linear-gradient(45deg, transparent, rgba(76, 201, 240, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
     pointer-events: none;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    20% { transform: translateX(100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
 }
 
 .fact-card:hover {
@@ -394,7 +409,7 @@ body::before {
     font-size: 0.95rem;
 }
 
-/* Section Styles */
+/* Section Titles */
 .section-title {
     font-size: 28px;
     color: var(--tertiary-color);
@@ -580,7 +595,7 @@ body::before {
     border-radius: 50%;
 }
 
-/* Important Places Section - UPDATED to match Chennai style */
+/* ===== IMPORTANT PLACES – FULL WIDTH IMAGES (AUTO HEIGHT, NO CROP) ===== */
 .places-section {
     max-width: 1200px;
     margin: 30px auto;
@@ -592,8 +607,8 @@ body::before {
 
 .places-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
 }
 
 .place-card {
@@ -603,6 +618,7 @@ body::before {
     box-shadow: var(--shadow-md);
     transition: var(--transition);
     display: flex;
+    flex-direction: column;
     border: 1px solid rgba(67, 97, 238, 0.1);
     backdrop-filter: blur(5px);
 }
@@ -614,59 +630,56 @@ body::before {
 }
 
 .card-image {
-    width: 100px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 40px;
-    position: relative;
+    width: 100%;
+    height: auto !important;      /* auto height – adapts to image */
     overflow: hidden;
+    background-color: #f0f0f0;
 }
 
-.card-image::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+.place-img {
+    width: 100%;
+    height: auto !important;      /* preserves aspect ratio */
+    display: block;
+    object-fit: contain;          /* shows full image without cropping */
+    transition: transform 0.3s ease;
+}
+
+.place-card:hover .place-img {
+    transform: scale(1.03);
 }
 
 .card-content {
     flex: 1;
-    padding: 20px;
+    padding: 1.25rem;
     background: rgba(255, 255, 255, 0.8);
 }
 
 .place-title {
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
     color: var(--primary-color);
     font-weight: 600;
 }
 
 .place-description {
     color: var(--text-dark);
-    font-size: 14px;
-    margin-bottom: 15px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
     line-height: 1.6;
 }
 
 .card-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    font-size: 12px;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #7e6b5a;
 }
 
 .meta-time, .meta-tag {
     display: flex;
     align-items: center;
     gap: 5px;
-    color: var(--text-dark);
     background: rgba(67, 97, 238, 0.05);
     padding: 4px 10px;
     border-radius: 20px;
@@ -674,12 +687,11 @@ body::before {
 
 .meta-time i, .meta-tag i {
     color: var(--primary-color);
+    margin-right: 4px;
 }
 
 .meta-tag {
     background: #dae6fa;
-    padding: 4px 10px;
-    border-radius: 20px;
     color: var(--secondary-color);
     font-weight: 500;
 }
@@ -749,7 +761,7 @@ body::before {
     line-height: 1.6;
 }
 
-/* Weather Widget - UPDATED size to match Chennai */
+/* Weather Widget – with GRADIENT SHIFT + FLOATING ICON + ROTATING BACKGROUND */
 .weather-section {
     max-width: 1200px;
     margin: 30px auto;
@@ -850,7 +862,7 @@ body::before {
     font-size: 20px;
 }
 
-/* Newsletter Section - UPDATED size to match Chennai */
+/* Newsletter Section */
 .newsletter-section {
     max-width: 1200px;
     margin: 40px auto;
@@ -932,7 +944,7 @@ body::before {
     box-shadow: var(--shadow-lg);
 }
 
-/* Back Link - UPDATED color to match Chennai */
+/* Back Link */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -960,7 +972,7 @@ body::before {
     margin-right: 8px;
 }
 
-/* Footer - UPDATED to match Chennai style */
+/* Footer */
 .footer {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: #fff;
@@ -1238,7 +1250,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Mobile Responsive Styles */
+/* Mobile Responsive */
 @media (max-width: 992px) {
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
@@ -1376,7 +1388,7 @@ html {
     
     .card-image {
         width: 100%;
-        height: 80px;
+        height: auto !important;
     }
     
     .newsletter-container {
@@ -1410,4 +1422,162 @@ html {
 .places-section,
 .info-section {
     animation: fadeIn 0.8s ease-out;
+}
+
+/* Subscribe toast message */
+.subscribe-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 10000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+
+.subscribe-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+/* Force uniform image box height */
+.places-section .card-image {
+    height: 200px !important;      /* Fixed height for every image container */
+    overflow: hidden;
+}
+
+.places-section .place-img {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;            /* Crops to fill the box evenly – no distortion */
+    transition: transform 0.3s ease;
+}
+/* ===== FIX PAGE SHAKING ON SCROLL ===== */
+html, body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+.place-card, .destination-card, .fact-card, .info-card {
+    will-change: transform;
+}
+
+/* ===== MODAL STYLES (already in inline, but keep for consistency) ===== */
+.places-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+.places-modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.places-modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.places-modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+.close-modal {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.close-modal:hover {
+    transform: scale(1.1);
+}
+.places-list {
+    padding: 1rem;
+    list-style: none;
+}
+.places-list li {
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+.places-list li i {
+    color: var(--primary-color);
+    width: 25px;
+}
+.places-list li:last-child {
+    border-bottom: none;
+}
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ===== MAP SECTION ===== */
+.map-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+.map-container {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    height: 400px;
+    width: 100%;
+}
+.map-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: var(--tertiary-color);
+}
+
+/* ===== BUTTON STYLE ===== */
+#showPlacesBtn {
+    background: linear-gradient(135deg, #4361ee, #4cc9f0);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+#showPlacesBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67,97,238,0.4);
 }
