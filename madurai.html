@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Madurai - Athens of the East | CityScope</title>
     <link rel="stylesheet" href="css/madurai-style.css">
-    <!-- Leaflet CSS for map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Inline override for modal and map – will also be in external CSS */
         .places-modal {
             display: none;
             position: fixed;
@@ -89,7 +86,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(67,97,238,0.4);
         }
-        /* Map container */
         .map-section {
             max-width: 1200px;
             margin: 40px auto;
@@ -101,6 +97,13 @@
             box-shadow: var(--shadow-lg);
             height: 400px;
             width: 100%;
+            cursor: default;
+        }
+        .map-container.interactive {
+            cursor: grab;
+        }
+        .map-container.interactive:active {
+            cursor: grabbing;
         }
         .map-title {
             text-align: center;
@@ -108,7 +111,6 @@
             font-size: 1.8rem;
             color: var(--tertiary-color);
         }
-        /* Custom popup style for better readability on dark map */
         .custom-popup .leaflet-popup-content-wrapper {
             background: #1a1a2e;
             color: #fff;
@@ -121,7 +123,6 @@
         .custom-popup a {
             color: #ffd166;
         }
-        /* Map search bar styling */
         .map-search-wrapper {
             display: flex;
             gap: 10px;
@@ -148,11 +149,24 @@
         .map-search-btn:hover {
             background: var(--secondary-color);
         }
+        .map-ctrl-hint {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #888;
+            padding: 6px 14px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 30px;
+            display: inline-block;
+        }
+        .map-ctrl-hint i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body class="city-page">
 
-    <!-- Top Bar and Navigation (search bar enhanced) -->
     <div class="top-bar">
         <div class="search-container">
             <input type="text" id="globalSearchInput" class="search-input" placeholder="Search places... (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
@@ -184,7 +198,6 @@
     </header>
 
     <main class="city-content">
-        <!-- Hero Section (unchanged) -->
         <section class="city-hero" id="home">
             <h2 class="city-name">Madurai <span class="city-tagline">The Athens of the East</span></h2>
             <figure class="hero-image-container">
@@ -198,7 +211,6 @@
             </div>
         </section>
 
-        <!-- About Section (unchanged) -->
         <section class="about-section" id="about">
             <h3 class="section-title">About Madurai</h3>
             <div class="about-content">
@@ -212,7 +224,6 @@
             </div>
         </section>
 
-        <!-- Why Visit Section (added button) -->
         <section class="highlights-section">
             <h3 class="section-title">Why Visit Madurai?</h3>
             <div class="highlights-grid">
@@ -227,13 +238,11 @@
                 <li class="highlight-item">Traditional Tamil culture and festivals</li>
                 <li class="highlight-item">UNESCO World Heritage tentative sites</li>
             </ul>
-            <!-- BUTTON FOR 20+ PLACES -->
             <div style="text-align: center; margin-top: 30px;">
                 <button id="showPlacesBtn"><i class="fas fa-map-marker-alt"></i> Show 20+ Places in Madurai</button>
             </div>
         </section>
 
-        <!-- Important Places (unchanged) -->
         <section class="places-section" id="places">
             <h3 class="section-title">Important Places</h3>
             <div class="places-grid">
@@ -246,7 +255,6 @@
             </div>
         </section>
 
-        <!-- Visitor Information (unchanged) -->
         <section class="info-section">
             <h3 class="section-title">Visitor Information</h3>
             <div class="info-cards">
@@ -257,7 +265,6 @@
             </div>
         </section>
 
-        <!-- Weather Widget (unchanged) -->
         <section class="weather-section">
             <h3 class="section-title">Current Weather</h3>
             <div class="weather-widget">
@@ -267,19 +274,19 @@
             </div>
         </section>
 
-        <!-- MAP SECTION (with search bar and many markers) -->
         <section class="map-section">
             <h3 class="map-title"><i class="fas fa-map-marked-alt"></i> Explore Madurai on Map</h3>
-            <!-- Map search bar -->
             <div class="map-search-wrapper">
                 <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search for a place in Madurai (e.g., Meenakshi, Alagar, Teppakulam)">
                 <button id="mapSearchBtn" class="map-search-btn"><i class="fas fa-search"></i> Search</button>
             </div>
             <div id="maduraiMap" class="map-container"></div>
-            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #ccc;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
+            <div style="text-align: center; margin-top: 10px;">
+                <span class="map-ctrl-hint"><i class="fas fa-keyboard"></i> Hold <kbd style="background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">Ctrl</kbd> to zoom &amp; move the map</span>
+            </div>
+            <p style="text-align: center; margin-top: 6px; font-size: 0.8rem; color: #666;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
         </section>
 
-        <!-- Newsletter Signup (unchanged) -->
         <section class="newsletter-section">
             <div class="newsletter-container">
                 <h3 class="newsletter-title">Discover More About Madurai</h3>
@@ -291,13 +298,11 @@
             </div>
         </section>
 
-        <!-- Back Link -->
         <div style="text-align: center;">
             <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
     </main>
 
-    <!-- Footer (unchanged) -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
@@ -349,7 +354,6 @@
 
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- MODAL HTML -->
     <div id="placesModal" class="places-modal">
         <div class="places-modal-content">
             <div class="places-modal-header">
@@ -381,19 +385,14 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Mobile menu toggle (only once)
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
         });
 
-        // ========== GLOBAL SEARCH FUNCTIONALITY (added) ==========
         const searchInput = document.getElementById('globalSearchInput');
         const searchBtn = document.getElementById('globalSearchBtn');
-        
-        // Mapping of city names to page URLs (case-insensitive)
         const cityPageMap = {
             'chennai': 'chennai.html',
             'madurai': 'madurai.html',
@@ -408,7 +407,6 @@
                 alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
                 return;
             }
-            // Check if query matches any city (partial or exact)
             let matchedCity = null;
             for (let city in cityPageMap) {
                 if (query.includes(city) || city.includes(query)) {
@@ -435,23 +433,25 @@
             });
         }
 
-        // ========== ENHANCED MAP WITH MANY MARKERS & SEARCH ==========
-        let map; // store map instance globally for search
-        let markersGroup = []; // store marker objects for filtering
+        let map;
+        let markersGroup = [];
 
         function initMap() {
             var maduraiLat = 9.9252;
             var maduraiLng = 78.1198;
-            map = L.map('maduraiMap').setView([maduraiLat, maduraiLng], 12);
+            map = L.map('maduraiMap', {
+                center: [maduraiLat, maduraiLng],
+                zoom: 12,
+                scrollWheelZoom: false,
+                dragging: false
+            });
 
-            // Dark theme tile layer
             L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
                 subdomains: 'abcd',
                 maxZoom: 19
             }).addTo(map);
 
-            // Custom bright red marker icon
             var redIcon = L.divIcon({
                 className: 'custom-div-icon',
                 html: '<i class="fas fa-map-marker-alt" style="font-size: 32px; color: #ff4757; text-shadow: 0 0 5px white;"></i>',
@@ -459,7 +459,6 @@
                 popupAnchor: [0, -16]
             });
 
-            // ========== MANY PLACES IN MADURAI DISTRICT (accurate coordinates - 40+ places) ==========
             var places = [
                 { name: "Meenakshi Amman Temple", lat: 9.9195, lng: 78.1193, icon: "fa-temple", color: "#ff6b6b" },
                 { name: "Thirumalai Nayakkar Palace", lat: 9.9145, lng: 78.1220, icon: "fa-palace", color: "#4ecdc4" },
@@ -504,7 +503,6 @@
                 { name: "Teppakulam Tank", lat: 9.9083, lng: 78.1300, icon: "fa-water", color: "#3498db" }
             ];
 
-            // Add all markers to map and store them
             places.forEach(place => {
                 var marker = L.marker([place.lat, place.lng], { icon: redIcon }).addTo(map);
                 marker.bindPopup(`
@@ -513,19 +511,78 @@
                         <i class="fas ${place.icon}" style="color: #4ecdc4;"></i> Must-visit spot in Madurai
                     </div>
                 `, { className: 'custom-popup' });
-                // Store marker with its name for search (lowercase for case-insensitive matching)
                 markersGroup.push({ marker: marker, name: place.name.toLowerCase(), lat: place.lat, lng: place.lng });
+            });
+
+            var mapContainer = document.getElementById('maduraiMap');
+            var ctrlPressed = false;
+
+            function setMapInteraction(enabled) {
+                if (enabled) {
+                    map.scrollWheelZoom.enable();
+                    map.dragging.enable();
+                    mapContainer.classList.add('interactive');
+                    mapContainer.style.cursor = 'grab';
+                } else {
+                    map.scrollWheelZoom.disable();
+                    map.dragging.disable();
+                    mapContainer.classList.remove('interactive');
+                    mapContainer.style.cursor = 'default';
+                }
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (!ctrlPressed) {
+                        ctrlPressed = true;
+                        setMapInteraction(true);
+                    }
+                }
+            });
+
+            document.addEventListener('keyup', function(e) {
+                if (!e.ctrlKey && !e.metaKey && ctrlPressed) {
+                    ctrlPressed = false;
+                    setMapInteraction(false);
+                }
+            });
+
+            window.addEventListener('blur', function() {
+                if (ctrlPressed) {
+                    ctrlPressed = false;
+                    setMapInteraction(false);
+                }
+            });
+
+            map.on('dragstart', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grabbing';
+                }
+            });
+
+            map.on('dragend', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grab';
+                }
+            });
+
+            mapContainer.addEventListener('mouseenter', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grab';
+                }
+            });
+
+            mapContainer.addEventListener('mouseleave', function() {
+                mapContainer.style.cursor = 'default';
             });
         }
 
-        // Function to search and pan to the marker (supports partial and exact matches)
         function searchPlaceOnMap(query) {
             if (!query.trim()) {
                 alert("Please enter a place name to search.");
                 return;
             }
             const lowerQuery = query.toLowerCase();
-            // Find first marker whose name contains the search term
             const found = markersGroup.find(item => item.name.includes(lowerQuery));
             if (found) {
                 map.setView([found.lat, found.lng], 15);
@@ -535,11 +592,9 @@
             }
         }
 
-        // Wait for DOM to load then initialize map and event listeners
         document.addEventListener('DOMContentLoaded', function() {
             initMap();
 
-            // Modal functionality
             const modal = document.getElementById('placesModal');
             const closeBtn = document.querySelector('.close-modal');
             const showBtn = document.getElementById('showPlacesBtn');
@@ -549,7 +604,6 @@
                 window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
             }
 
-            // Map search button and input
             const mapSearchBtn = document.getElementById('mapSearchBtn');
             const mapSearchInput = document.getElementById('mapSearchInput');
             if (mapSearchBtn && mapSearchInput) {

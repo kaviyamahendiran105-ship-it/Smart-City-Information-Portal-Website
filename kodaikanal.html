@@ -175,7 +175,13 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             height: 420px;
             width: 100%;
-            z-index: 1;
+            cursor: default;
+        }
+        .map-container.interactive {
+            cursor: grab;
+        }
+        .map-container.interactive:active {
+            cursor: grabbing;
         }
         .map-title {
             text-align: center;
@@ -217,6 +223,20 @@
         }
         .map-search-btn:hover {
             background: var(--secondary-color);
+        }
+        .map-ctrl-hint {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #888;
+            padding: 6px 14px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 30px;
+            display: inline-block;
+        }
+        .map-ctrl-hint i {
+            color: var(--primary-color);
+            margin-right: 5px;
         }
 
         html, body {
@@ -375,7 +395,10 @@
                 <button id="mapSearchBtn" class="map-search-btn"><i class="fas fa-search"></i> Search</button>
             </div>
             <div id="kodaikanalMap" class="map-container"></div>
-            <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #2c3e50;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
+            <div style="text-align: center; margin-top: 10px;">
+                <span class="map-ctrl-hint"><i class="fas fa-keyboard"></i> Hold <kbd style="background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">Ctrl</kbd> to zoom &amp; move the map</span>
+            </div>
+            <p style="text-align: center; margin-top: 6px; font-size: 0.8rem; color: #666;">📍 Click markers – each place name has a unique bright color. Use the search bar above to find any place.</p>
         </section>
 
         <section class="newsletter-section">
@@ -531,7 +554,12 @@
 
         function initKodaikanalMap() {
             const kodaiCenter = [10.2381, 77.4895];
-            map = L.map('kodaikanalMap').setView(kodaiCenter, 12);
+            map = L.map('kodaikanalMap', {
+                center: kodaiCenter,
+                zoom: 12,
+                scrollWheelZoom: false,
+                dragging: false
+            });
 
             L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -580,6 +608,68 @@
                     </div>
                 `, { className: 'custom-popup' });
                 markersGroup.push({ marker: marker, name: spot.name.toLowerCase(), lat: spot.lat, lng: spot.lng });
+            });
+
+            var mapContainer = document.getElementById('kodaikanalMap');
+            var ctrlPressed = false;
+
+            function setMapInteraction(enabled) {
+                if (enabled) {
+                    map.scrollWheelZoom.enable();
+                    map.dragging.enable();
+                    mapContainer.classList.add('interactive');
+                    mapContainer.style.cursor = 'grab';
+                } else {
+                    map.scrollWheelZoom.disable();
+                    map.dragging.disable();
+                    mapContainer.classList.remove('interactive');
+                    mapContainer.style.cursor = 'default';
+                }
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (!ctrlPressed) {
+                        ctrlPressed = true;
+                        setMapInteraction(true);
+                    }
+                }
+            });
+
+            document.addEventListener('keyup', function(e) {
+                if (!e.ctrlKey && !e.metaKey && ctrlPressed) {
+                    ctrlPressed = false;
+                    setMapInteraction(false);
+                }
+            });
+
+            window.addEventListener('blur', function() {
+                if (ctrlPressed) {
+                    ctrlPressed = false;
+                    setMapInteraction(false);
+                }
+            });
+
+            map.on('dragstart', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grabbing';
+                }
+            });
+
+            map.on('dragend', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grab';
+                }
+            });
+
+            mapContainer.addEventListener('mouseenter', function() {
+                if (ctrlPressed) {
+                    mapContainer.style.cursor = 'grab';
+                }
+            });
+
+            mapContainer.addEventListener('mouseleave', function() {
+                mapContainer.style.cursor = 'default';
             });
         }
 

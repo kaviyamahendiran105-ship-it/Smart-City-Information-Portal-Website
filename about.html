@@ -2,765 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CityScope - About Us | Smart City Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/about.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Hero background with full‑cover image - rectangle, no curves */
+        .hero-section.about-hero {
+            background: url('images/about.png') center/cover no-repeat;
+            position: relative;
+            min-height: 500px;
+            /* Remove any gradient that might cause gray areas */
+            background-color: #1a1a2e;
         }
-
-        :root {
-            --primary-color: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary-color: #06d6a0;
-            --accent-color: #ffd166;
-            --dark-color: #2b2d42;
-            --light-color: #f8f9fa;
-            --gray-color: #6c757d;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-            --transition: all 0.3s ease;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark-color);
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .highlight {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        .main-nav {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-md);
-            position: sticky;
+        .hero-section.about-hero::before {
+            content: '';
+            position: absolute;
             top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(6,214,160,0.1));
-            padding: 5px 15px;
-            border-radius: 50px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .logo i {
-            color: var(--primary-color);
-            animation: spin 20s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .logo-text {
-            color: var(--dark-color);
-        }
-
-        .logo-highlight {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-            padding: 10px 15px;
-            border-radius: 30px;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            transition: var(--transition);
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 50%;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .login-btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white !important;
-            padding: 10px 25px !important;
-        }
-
-        .login-btn::after {
-            display: none;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .mobile-menu {
-            display: none;
-            position: relative;
-        }
-
-        .menu-toggle {
-            display: none;
-        }
-
-        .mobile-menu-btn {
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary-color);
-            display: inline-block;
-        }
-
-        .mobile-menu-dropdown {
-            position: absolute;
-            top: 100%;
+            left: 0;
             right: 0;
-            background: white;
-            min-width: 200px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-lg);
-            padding: 10px 0;
-            display: none;
-            z-index: 1000;
-        }
-
-        .menu-toggle:checked ~ .mobile-menu-dropdown {
-            display: block;
-        }
-
-        .mobile-link {
-            display: block;
-            padding: 12px 20px;
-            color: var(--dark-color);
-            transition: var(--transition);
-        }
-
-        .mobile-link:hover {
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(6,214,160,0.1));
-            color: var(--primary-color);
-        }
-
-        .mobile-link.active {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .login-mobile {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white !important;
-            margin: 10px;
-            border-radius: 30px;
-            text-align: center;
-        }
-
-        .search-section {
-            background: white;
-            padding: 40px 0;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            z-index: 20;
-        }
-
-        .search-container {
-            max-width: 700px;
-            margin: 0 auto;
-            display: flex;
-            gap: 10px;
-            background: white;
-            border-radius: 60px;
-            box-shadow: var(--shadow-lg);
-            padding: 5px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 18px 25px;
-            border: none;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            box-shadow: 0 0 0 3px rgba(67,97,238,0.2);
-        }
-
-        .search-btn {
-            padding: 18px 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            border-radius: 60px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .about-section {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .about-content {
-            display: flex;
-            justify-content: center;
-        }
-
-        .about-text {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .section-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(6,214,160,0.1));
-            color: var(--primary-color);
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .about-title {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .title-underline {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            margin: 0 auto 25px;
-            border-radius: 2px;
-        }
-
-        .about-description {
-            color: var(--gray-color);
-            margin: 20px 0;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .about-features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
-        }
-
-        .about-feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f8f9fa;
-            padding: 10px 20px;
-            border-radius: 50px;
-        }
-
-        .about-feature i {
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-        }
-
-        .features-section {
-            padding: 80px 0 60px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            text-align: center;
-            padding: 40px 30px;
-            border-radius: 20px;
-            transition: var(--transition);
-            background: white;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .feature-number {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 3rem;
-            font-weight: 700;
-            color: rgba(67,97,238,0.1);
-        }
-
-        .feature-icon-wrapper {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-        }
-
-        .feature-icon {
-            font-size: 2.2rem;
-            color: white;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .feature-text {
-            color: var(--gray-color);
-            line-height: 1.6;
-        }
-
-        .testimonials-section {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-divider {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            margin: 0 auto 20px;
-            border-radius: 2px;
-            position: relative;
-        }
-
-        .section-divider::before,
-        .section-divider::after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .section-divider::before {
-            left: -20px;
-        }
-        .section-divider::after {
-            right: -20px;
-            background: var(--secondary-color);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .testimonial-card {
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            padding: 35px 25px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .testimonial-card img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            object-fit: cover;
-            border: 4px solid var(--primary-color);
-        }
-
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #1a2634, #2d3e50);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-content {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-            position: relative;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.35);
             z-index: 1;
         }
-
-        .cta-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-text {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .cta-btn {
-            padding: 18px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-        }
-
-        .cta-btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .cta-btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
-        }
-
-        .footer {
-            background: #1a2634;
-            color: #fff;
-            padding: 60px 0 20px;
+        .hero-section.about-hero .hero-content {
             position: relative;
-            margin-top: 0;
-            overflow: hidden;
+            z-index: 2;
         }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color), #2a9d8f);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1.5fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section {
-            padding: 0 15px;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .footer-logo i {
-            color: var(--accent-color);
-            font-size: 32px;
-            animation: spin 20s linear infinite;
-        }
-
-        .footer-logo span {
-            background: linear-gradient(135deg, #fff, #e0e0e0);
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .footer-description {
-            color: #b0b0b0;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .footer-title {
-            color: #fff;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 12px;
-        }
-
-        .footer-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        .footer-links a {
-            color: #b0b0b0;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        .footer-links a i {
-            font-size: 12px;
-            color: var(--accent-color);
-        }
-        .footer-links a:hover {
-            color: #fff;
-            transform: translateX(5px);
-        }
-
-        .contact-info {
-            list-style: none;
-            padding: 0;
-        }
-        .contact-info li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 15px;
-            color: #b0b0b0;
-            font-size: 14px;
-        }
-        .contact-info li i {
-            color: var(--accent-color);
-            font-size: 16px;
-            margin-top: 3px;
-        }
-        .contact-info a {
-            color: #b0b0b0;
-            transition: var(--transition);
-        }
-        .contact-info a:hover {
-            color: var(--accent-color);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            transition: var(--transition);
-            font-size: 18px;
-        }
-        .social-link:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 14px;
-            color: #b0b0b0;
-        }
-        .footer-credit i {
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-        @keyframes heartbeat {
-            0%,100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            box-shadow: var(--shadow-lg);
-            z-index: 999;
-            transition: var(--transition);
-        }
-        .back-to-top:hover {
-            transform: translateY(-5px);
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-menu { display: block; }
-            .features-grid { grid-template-columns: 1fr; }
-            .testimonials-grid { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; gap: 30px; }
-            .footer-section { text-align: center; }
-            .footer-title::after { left: 50%; transform: translateX(-50%); }
-            .footer-links a { justify-content: center; }
-            .contact-info li { justify-content: center; }
-            .social-links { justify-content: center; }
-            .footer-bottom { flex-direction: column; text-align: center; }
-            .cta-title { font-size: 2rem; }
-            .cta-buttons { flex-direction: column; align-items: center; }
-            .search-container { margin: 0 20px; }
+        /* Hide shapes and wave to keep clean rectangle */
+        .hero-section.about-hero .hero-shapes,
+        .hero-section.about-hero .hero-wave {
+            display: none !important;
         }
     </style>
 </head>
 <body>
+
+    <!-- Navigation (identical to index.html) -->
     <nav class="main-nav">
         <div class="nav-container">
-            <div class="logo"><i class="fas fa-compass"></i><span class="logo-text">City<span class="logo-highlight">Scope</span></span></div>
+            <div class="logo">
+                <i class="fas fa-compass"></i>
+                <span class="logo-text">City<span class="logo-highlight">Scope</span></span>
+            </div>
             <ul class="nav-links">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="destinations.html" class="nav-link">Destinations</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link active">About</a></li>
-                <li class="nav-item"><a href="login.html" class="nav-link login-btn">Login</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+                <li><a href="about.html" class="nav-link active">About</a></li>
+                <li><a href="login.html" class="nav-link login-btn">Login</a></li>
+                <li><a href="plan-trip.html" class="nav-link plan-trip-header-btn">✈️ Plan Trip</a></li>
             </ul>
             <div class="mobile-menu">
                 <input type="checkbox" id="menu-toggle" class="menu-toggle">
@@ -769,87 +59,154 @@
                     <a href="index.html" class="mobile-link">Home</a>
                     <a href="destinations.html" class="mobile-link">Destinations</a>
                     <a href="about.html" class="mobile-link active">About</a>
-                    <a href="login.html" class="mobile-link login-mobile">Login</a>
+                    <a href="login.html" class="mobile-link">Login</a>
+                    <a href="plan-trip.html" class="mobile-link plan-trip-mobile">✈️ Plan Trip</a>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Search Section -->
     <section class="search-section">
         <div class="container">
             <div class="search-container">
-                <input type="text" class="search-input" id="globalSearch" placeholder="Where do you want to go? (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)">
-                <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+                <input type="text" class="search-input" placeholder="Where do you want to go? (Chennai, Madurai, Ooty, ...)">
+                <button class="search-btn"><i class="fas fa-search"></i> Search</button>
             </div>
         </div>
     </section>
 
-    <section class="about-section">
+    <!-- Hero Section (About Us) – clean rectangle, full image -->
+    <section class="hero-section about-hero">
+        <div class="hero-content">
+            <span class="hero-badge">✨ About CityScope ✨</span>
+            <h1 class="hero-title">Your <span class="hero-highlight">Smart Companion</span> for Exploring Tamil Nadu</h1>
+            <p class="hero-subtitle">We combine authentic local knowledge with modern technology to help you discover the soul of every city.</p>
+        </div>
+        <!-- Shapes and wave removed – hidden via CSS -->
+        <div class="hero-shapes" style="display:none;">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+            <div class="shape shape4"></div>
+            <div class="shape shape5"></div>
+        </div>
+        <div class="hero-wave" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Cards -->
+    <section class="mission-section">
         <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <span class="section-badge">About Us</span>
-                    <h2 class="about-title">Discover the <span class="highlight">CityScope</span> Difference</h2>
-                    <div class="title-underline"></div>
-                    <p class="about-description">Smart City Information Portal is your comprehensive guide to exploring the most fascinating cities in Tamil Nadu. From ancient temple towns to picturesque hill stations, we bring you detailed information about each destination's history, culture, must-visit places, and travel tips.</p>
-                    <p class="about-description">Whether you're a history enthusiast, nature lover, or cultural explorer, our portal helps you discover the unique charm of each city and plan your perfect journey through South India.</p>
-                    <div class="about-features">
-                        <div class="about-feature"><i class="fas fa-check-circle"></i><span>City overviews</span></div>
-                        <div class="about-feature"><i class="fas fa-check-circle"></i><span>Tourist information</span></div>
-                        <div class="about-feature"><i class="fas fa-check-circle"></i><span>Cultural importance</span></div>
-                        <div class="about-feature"><i class="fas fa-check-circle"></i><span>Easy navigation</span></div>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="card-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Our Mission</h3>
+                    <p>To provide authentic, up‑to‑date, and comprehensive travel information that helps travelers experience the true essence of Tamil Nadu's cities.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="card-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Our Vision</h3>
+                    <p>To become the most trusted digital companion for every traveler exploring South India, celebrating its rich heritage and natural beauty.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="card-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Our Values</h3>
+                    <p>Authenticity, accuracy, user‑centric design, and a deep respect for local culture and traditions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number"><span class="counter" data-target="5">0</span>+</div>
+                    <div class="stat-label">Popular Cities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><span class="counter" data-target="120">0</span>+</div>
+                    <div class="stat-label">Tourist Places</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><span class="counter" data-target="50000">0</span>+</div>
+                    <div class="stat-label">Happy Travelers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><span class="counter" data-target="8">0</span>+</div>
+                    <div class="stat-label">Years of Trust</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section (What Our Travelers Say) -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Traveler Stories</span>
+                <h2 class="section-title">What Our <span class="highlight">Travelers Say</span></h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Real experiences from people who explored Tamil Nadu with CityScope</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">CityScope made planning my Tamil Nadu trip effortless. The details about temple timings and local food were spot on!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J.">
+                        <div>
+                            <h4>Sarah J.</h4>
+                            <span>Travel Blogger</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">Best travel portal for South India. I discovered hidden gems in Madurai and Ooty thanks to their curated guides.</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael C.">
+                        <div>
+                            <h4>Michael C.</h4>
+                            <span>Photographer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">From Chennai's beaches to Kodaikanal's mist, every recommendation was perfect. Highly recommend CityScope!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya P.">
+                        <div>
+                            <h4>Priya P.</h4>
+                            <span>Food Enthusiast</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="features-section">
+    <!-- Newsletter Signup -->
+    <section class="newsletter-section">
         <div class="container">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-number">✨</div>
-                    <div class="feature-icon-wrapper"><i class="fas fa-bullseye feature-icon"></i></div>
-                    <h3 class="feature-title">Our Mission</h3>
-                    <p class="feature-text">To provide authentic, up-to-date, and comprehensive travel information that helps travelers experience the true essence of Tamil Nadu's cities.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-number">🌟</div>
-                    <div class="feature-icon-wrapper"><i class="fas fa-eye feature-icon"></i></div>
-                    <h3 class="feature-title">Our Vision</h3>
-                    <p class="feature-text">To become the most trusted digital companion for every traveler exploring South India, celebrating its rich heritage and natural beauty.</p>
-                </div>
+            <div class="newsletter-container">
+                <h3 class="newsletter-title">Discover More With CityScope</h3>
+                <p class="newsletter-text">Subscribe for travel tips, cultural events, and exclusive offers</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
             </div>
         </div>
     </section>
 
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Behind the Scenes</span>
-                <h2 class="section-title">Meet Our <span class="highlight">Team</span></h2>
-                <div class="section-divider"></div>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Team Member"><h3>Arun Kumar</h3><p style="color:var(--gray-color);">Founder & Travel Expert</p></div>
-                <div class="testimonial-card"><img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Team Member"><h3>Priya Srinivasan</h3><p style="color:var(--gray-color);">Content Lead</p></div>
-                <div class="testimonial-card"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Team Member"><h3>Karthik Raja</h3><p style="color:var(--gray-color);">Tech Lead</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Start Your Journey Today</h2>
-                <p class="cta-text">Explore our destinations and plan your perfect trip with CityScope</p>
-                <div class="cta-buttons">
-                    <a href="destinations.html" class="cta-btn cta-btn-primary"><i class="fas fa-map-marked-alt"></i> <span>Browse Cities</span></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
@@ -857,10 +214,10 @@
                     <div class="footer-logo"><i class="fas fa-compass"></i><span>City<span class="logo-highlight">Scope</span></span></div>
                     <p class="footer-description">Your gateway to exploring India's most fascinating cities with authentic information and travel guides.</p>
                     <div class="social-links">
-                        <a href="#" class="social-link" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -870,6 +227,7 @@
                         <li><a href="destinations.html"><i class="fas fa-chevron-right"></i> Destinations</a></li>
                         <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
                         <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                        <li><a href="plan-trip.html"><i class="fas fa-chevron-right"></i> Plan Trip</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -894,82 +252,13 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 CityScope - Smart City Information Portal. All rights reserved.</p>
-                <p class="footer-credit">Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for travelers</p>
+                <p class="footer-credit">Designed with <i class="fas fa-heart"></i> for travelers</p>
             </div>
         </div>
     </footer>
 
     <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
 
-    <script>
-        (function() {
-            const searchInput = document.getElementById('globalSearch');
-            const searchBtn = document.getElementById('searchBtn');
-
-            const cityMap = {
-                'chennai': 'chennai.html',
-                'madurai': 'madurai.html',
-                'thanjavur': 'thanjavur.html',
-                'ooty': 'ooty.html',
-                'kodaikanal': 'kodaikanal.html'
-            };
-
-            function performSearch() {
-                let query = searchInput.value.trim().toLowerCase();
-                if (!query) {
-                    alert('Please enter a city name (Chennai, Madurai, Thanjavur, Ooty, Kodaikanal)');
-                    return;
-                }
-                let matchedKey = null;
-                for (let key in cityMap) {
-                    if (query.includes(key) || key.includes(query)) {
-                        matchedKey = key;
-                        break;
-                    }
-                }
-                if (matchedKey) {
-                    window.location.href = cityMap[matchedKey];
-                } else {
-                    alert('City not found. Try: Chennai, Madurai, Thanjavur, Ooty, or Kodaikanal');
-                }
-            }
-
-            if (searchBtn) {
-                searchBtn.addEventListener('click', performSearch);
-            }
-            if (searchInput) {
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        performSearch();
-                    }
-                });
-            }
-
-            const backBtn = document.getElementById('backToTop');
-            if (backBtn) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 300) {
-                        backBtn.style.display = 'flex';
-                    } else {
-                        backBtn.style.display = 'none';
-                    }
-                });
-                backBtn.style.display = 'none';
-                backBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            const mobileLinks = document.querySelectorAll('.mobile-link');
-            const menuToggle = document.getElementById('menu-toggle');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (menuToggle) menuToggle.checked = false;
-                });
-            });
-        })();
-    </script>
+    <script src="JS/about.js"></script>
 </body>
 </html>

@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CityScope - Login | Smart City Guide</title>
+    <title>CityScope - Sign Up | Smart City Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
-
 
     <nav class="main-nav">
         <div class="nav-container">
@@ -21,7 +20,7 @@
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="destinations.html" class="nav-link">Destinations</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="login.html" class="nav-link active login-btn">Login</a></li>
+                <li><a href="login.html" class="nav-link login-btn">Login</a></li>
                 <li><a href="plan-trip.html" class="nav-link plan-trip-header-btn">✈️ Plan Trip</a></li>
             </ul>
             <div class="mobile-menu">
@@ -31,14 +30,13 @@
                     <a href="index.html" class="mobile-link">Home</a>
                     <a href="destinations.html" class="mobile-link">Destinations</a>
                     <a href="about.html" class="mobile-link">About</a>
-                    <a href="login.html" class="mobile-link active">Login</a>
+                    <a href="login.html" class="mobile-link">Login</a>
                     <a href="plan-trip.html" class="mobile-link">Plan Trip</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Search Section (optional, keep consistent) -->
     <section class="search-section">
         <div class="container">
             <div class="search-container">
@@ -48,17 +46,26 @@
         </div>
     </section>
 
-    <!-- Login Hero / Card Section -->
-    <section class="login-hero">
+    <section class="signup-hero">
         <div class="container">
-            <div class="login-card-wrapper">
-                <div class="login-card">
-                    <div class="login-header">
-                        <h2>Welcome Back</h2>
-                        <p>Sign in to access your travel plans and saved places</p>
+            <div class="signup-card-wrapper">
+                <div class="signup-card">
+                    <div class="signup-header">
+                        <h2>Create Account</h2>
+                        <p>Join CityScope to plan your perfect journey</p>
                     </div>
 
-                    <form id="loginForm" class="login-form" novalidate>
+                    <form id="signupForm" class="signup-form" novalidate>
+                        <!-- Full Name -->
+                        <div class="input-group">
+                            <div class="input-icon"><i class="fas fa-user"></i></div>
+                            <div class="input-field">
+                                <input type="text" id="fullname" placeholder=" " required>
+                                <label>Full Name</label>
+                                <span class="error-message" id="nameError"></span>
+                            </div>
+                        </div>
+
                         <!-- Email -->
                         <div class="input-group">
                             <div class="input-icon"><i class="fas fa-envelope"></i></div>
@@ -80,19 +87,29 @@
                             </div>
                         </div>
 
-                        <!-- Remember me & Forgot -->
-                        <div class="form-options">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="remember">
-                                <span class="checkmark"></span>
-                                Remember me
-                            </label>
-                            <a href="#" class="forgot-link">Forgot Password?</a>
+                        <!-- Confirm Password -->
+                        <div class="input-group">
+                            <div class="input-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="input-field">
+                                <input type="password" id="confirmPassword" placeholder=" " required>
+                                <label>Confirm Password</label>
+                                <i class="fas fa-eye-slash toggle-password" id="toggleConfirmPassword"></i>
+                                <span class="error-message" id="confirmError"></span>
+                            </div>
                         </div>
 
-                        <!-- Login Button -->
-                        <button type="submit" class="login-btn" id="loginBtn">
-                            <span>Sign In</span>
+                        <!-- Terms Checkbox -->
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="terms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <!-- Sign Up Button -->
+                        <button type="submit" class="signup-btn" id="signupBtn">
+                            <span>Create Account</span>
                             <i class="fas fa-arrow-right"></i>
                         </button>
 
@@ -105,22 +122,16 @@
                             Continue with Google
                         </button>
 
-                        <!-- Sign up link -->
-                        <div class="signup-prompt">
-                            Don't have an account? <a href="signup.html">Create one</a>
+                        <!-- Login link -->
+                        <div class="login-prompt">
+                            Already have an account? <a href="login.html">Sign in</a>
                         </div>
                     </form>
-
-                    <!-- Demo hint (only for presentation) -->
-                    <div class="demo-hint">
-                        <i class="fas fa-flask"></i> Demo: demo@cityscope.com / password123
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer (blue gradient, same as index) -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -176,6 +187,6 @@
 
     <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
 
-    <script src="JS/login.js"></script>
+    <script src="JS/signup.js"></script>
 </body>
 </html>

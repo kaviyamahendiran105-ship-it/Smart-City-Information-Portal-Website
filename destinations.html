@@ -184,33 +184,51 @@
             box-shadow: 0 5px 15px rgba(67,97,238,0.4);
         }
 
+        /* === HERO WITH FULL COVER IMAGE (top part visible) === */
         .hero-section {
             position: relative;
-            min-height: 500px;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            width: 100%;
+            max-width: 1920px;
+            height: 640px;
+            margin: 0 auto;
+            overflow: hidden;
+            background-color: #1a1a2e; /* fallback */
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
         }
-        .hero-bg-image {
+
+        .custom-banner {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.25;
-            z-index: 0;
+            object-position: top center;
+            display: block;
         }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+
         .hero-content {
-            position: relative;
+            position: absolute;
             z-index: 2;
             max-width: 800px;
             padding: 0 20px;
+            text-align: center;
+            color: white;
         }
+
         .hero-badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
@@ -218,6 +236,7 @@
             border-radius: 40px;
             font-size: 0.9rem;
             margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
         }
         .hero-title {
             font-size: 3rem;
@@ -241,6 +260,16 @@
         }
         .stat {
             text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 0.8rem 1.8rem;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: var(--transition);
+        }
+        .stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
         }
         .stat-number {
             font-size: 2rem;
@@ -254,6 +283,7 @@
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
             .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+            .stat { padding: 0.5rem 1rem; }
         }
 
         .destinations-section {
@@ -643,8 +673,9 @@
         </div>
     </section>
 
+    <!-- ===== HERO WITH FULL COVER IMAGE (top part visible) ===== -->
     <section class="hero-section">
-        <img src="images/tamil-nadu-map.jpg" alt="Tamil Nadu Heritage" class="hero-bg-image" onerror="this.src='https://via.placeholder.com/1920x600?text=Tamil+Nadu'">
+        <img src="images/destination.jpg" alt="Tamil Nadu Destinations" class="custom-banner">
         <div class="hero-content">
             <span class="hero-badge">✨ Discover Your Next Adventure ✨</span>
             <h1 class="hero-title">Explore All <span class="hero-highlight">Destinations</span></h1>

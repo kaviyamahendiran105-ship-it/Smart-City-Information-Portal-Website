@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,10 +184,10 @@
             box-shadow: 0 5px 15px rgba(67,97,238,0.4);
         }
 
+        /* ===== HERO SECTION – WITH ZOOM EFFECT ===== */
         .hero-section {
             position: relative;
             min-height: 600px;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -196,22 +195,48 @@
             color: white;
             overflow: hidden;
         }
-        .hero-bg-image {
+
+        /* Background image layer with zoom animation */
+        .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            opacity: 0.25;
+            background: url('images/frontimage.png') center/cover no-repeat;
             z-index: 0;
+            will-change: transform;
+            animation: zoomIn 20s ease-in-out infinite alternate;
         }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.08);
+            }
+        }
+
+        /* Dark overlay for text readability */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+
         .hero-content {
             position: relative;
             z-index: 2;
             max-width: 800px;
             padding: 0 20px;
         }
+
         .hero-badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
@@ -219,6 +244,7 @@
             border-radius: 40px;
             font-size: 0.9rem;
             margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
         }
         .hero-title {
             font-size: 3.5rem;
@@ -242,6 +268,16 @@
         }
         .stat {
             text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 0.8rem 1.8rem;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: var(--transition);
+        }
+        .stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
         }
         .stat-number {
             font-size: 2rem;
@@ -255,8 +291,10 @@
         @media (max-width: 768px) {
             .hero-title { font-size: 2.2rem; }
             .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+            .stat { padding: 0.5rem 1rem; }
         }
 
+        /* ===== REMAINING SECTIONS (UNCHANGED) ===== */
         .welcome-section {
             padding: 5rem 0;
             background: white;
@@ -786,8 +824,9 @@
         </div>
     </section>
 
+    <!-- ===== HERO SECTION – WITH ZOOM EFFECT ===== -->
     <section class="hero-section">
-        <img src="images/tamil-nadu-map.jpg" alt="Tamil Nadu Heritage" class="hero-bg-image" onerror="this.src='https://via.placeholder.com/1920x600?text=Tamil+Nadu'">
+        <div class="hero-bg"></div>
         <div class="hero-content">
             <span class="hero-badge">✨ Welcome to CityScope ✨</span>
             <h1 class="hero-title">Discover the Magic of <span class="hero-highlight">Tamil Nadu</span></h1>
@@ -800,6 +839,7 @@
         </div>
     </section>
 
+    <!-- ===== REMAINING SECTIONS (UNCHANGED) ===== -->
     <section class="welcome-section">
         <div class="container">
             <div class="welcome-content">
