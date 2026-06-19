@@ -12,7 +12,6 @@
             background: url('images/about.png') center/cover no-repeat;
             position: relative;
             min-height: 500px;
-            /* Remove any gradient that might cause gray areas */
             background-color: #1a1a2e;
         }
         .hero-section.about-hero::before {
@@ -29,16 +28,78 @@
             position: relative;
             z-index: 2;
         }
-        /* Hide shapes and wave to keep clean rectangle */
         .hero-section.about-hero .hero-shapes,
         .hero-section.about-hero .hero-wave {
             display: none !important;
+        }
+
+        /* ---- Mobile menu overrides (ensures dropdown works) ---- */
+        .mobile-menu {
+            position: relative;
+        }
+        .mobile-menu-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            display: inline-block;
+        }
+        .mobile-menu-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 200px;
+            display: none;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        .mobile-menu-dropdown.open {
+            display: flex;
+        }
+        .mobile-link {
+            padding: 0.5rem 0;
+            text-align: center;
+            display: block;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .mobile-link:hover {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+        .mobile-link.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .plan-trip-mobile {
+            background: #ff6b6b !important;
+            color: white !important;
+            margin: 10px !important;
+            border-radius: 30px !important;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation (identical to index.html) -->
+    <!-- Navigation (updated with JS toggle) -->
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
@@ -53,9 +114,10 @@
                 <li><a href="plan-trip.html" class="nav-link plan-trip-header-btn">✈️ Plan Trip</a></li>
             </ul>
             <div class="mobile-menu">
-                <input type="checkbox" id="menu-toggle" class="menu-toggle">
-                <label for="menu-toggle" class="mobile-menu-btn"><i class="fas fa-bars"></i></label>
-                <div class="mobile-menu-dropdown">
+                <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="mobile-menu-dropdown" id="mobileMenuDropdown">
                     <a href="index.html" class="mobile-link">Home</a>
                     <a href="destinations.html" class="mobile-link">Destinations</a>
                     <a href="about.html" class="mobile-link active">About</a>
@@ -83,7 +145,6 @@
             <h1 class="hero-title">Your <span class="hero-highlight">Smart Companion</span> for Exploring Tamil Nadu</h1>
             <p class="hero-subtitle">We combine authentic local knowledge with modern technology to help you discover the soul of every city.</p>
         </div>
-        <!-- Shapes and wave removed – hidden via CSS -->
         <div class="hero-shapes" style="display:none;">
             <div class="shape shape1"></div>
             <div class="shape shape2"></div>
@@ -260,5 +321,35 @@
     <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
 
     <script src="JS/about.js"></script>
+    <script>
+        // ===== MOBILE MENU TOGGLE (JS) =====
+        (function() {
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const menuDropdown = document.getElementById('mobileMenuDropdown');
+
+            if (menuToggle && menuDropdown) {
+                // Toggle dropdown on button click
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menuDropdown.classList.toggle('open');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+                        menuDropdown.classList.remove('open');
+                    }
+                });
+
+                // Close dropdown when a link is clicked
+                const mobileLinks = menuDropdown.querySelectorAll('.mobile-link');
+                mobileLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        menuDropdown.classList.remove('open');
+                    });
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

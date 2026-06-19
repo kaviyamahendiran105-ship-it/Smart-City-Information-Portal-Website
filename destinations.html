@@ -108,39 +108,69 @@
             padding: 0.5rem 1.5rem;
             border-radius: 30px;
         }
+
+        /* ---- Mobile menu (consistent with index & about) ---- */
         .mobile-menu {
             display: none;
+            position: relative;
         }
         .mobile-menu-btn {
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--dark);
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            display: inline-block;
         }
+        .mobile-menu-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            min-width: 200px;
+            display: none;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        .mobile-menu-dropdown.open {
+            display: flex;
+        }
+        .mobile-link {
+            padding: 0.5rem 0;
+            text-align: center;
+            display: block;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .mobile-link:hover {
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+        .mobile-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .plan-trip-mobile {
+            background: #ff6b6b !important;
+            color: white !important;
+            margin: 10px !important;
+            border-radius: 30px !important;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
             .mobile-menu {
                 display: block;
-            }
-            .mobile-menu-dropdown {
-                position: absolute;
-                top: 70px;
-                right: 20px;
-                background: white;
-                border-radius: 12px;
-                box-shadow: var(--shadow);
-                width: 200px;
-                display: none;
-                flex-direction: column;
-                padding: 1rem;
-                z-index: 1000;
-            }
-            .menu-toggle:checked + .mobile-menu-btn + .mobile-menu-dropdown {
-                display: flex;
-            }
-            .mobile-link {
-                padding: 0.5rem;
-                text-align: center;
             }
         }
 
@@ -651,14 +681,15 @@
                 <li><a href="plan-trip.html" class="nav-link plan-trip-header-btn">✈️ Plan Trip</a></li>
             </ul>
             <div class="mobile-menu">
-                <input type="checkbox" id="menu-toggle" class="menu-toggle" style="display:none;">
-                <label for="menu-toggle" class="mobile-menu-btn"><i class="fas fa-bars"></i></label>
-                <div class="mobile-menu-dropdown">
+                <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="mobile-menu-dropdown" id="mobileMenuDropdown">
                     <a href="index.html" class="mobile-link">Home</a>
                     <a href="destinations.html" class="mobile-link active">Destinations</a>
                     <a href="about.html" class="mobile-link">About</a>
                     <a href="login.html" class="mobile-link">Login</a>
-                    <a href="plan-trip.html" class="mobile-link">Plan Trip</a>
+                    <a href="plan-trip.html" class="mobile-link plan-trip-mobile">✈️ Plan Trip</a>
                 </div>
             </div>
         </div>
@@ -864,11 +895,27 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            const menuToggle = document.getElementById('menu-toggle');
-            const mobileBtn = document.querySelector('.mobile-menu-btn');
-            if (mobileBtn) {
-                mobileBtn.addEventListener('click', () => {
-                    if (menuToggle) menuToggle.checked = !menuToggle.checked;
+            // ===== MOBILE MENU TOGGLE (consistent with index & about) =====
+            const menuToggleBtn = document.getElementById('mobileMenuToggle');
+            const menuDropdown = document.getElementById('mobileMenuDropdown');
+
+            if (menuToggleBtn && menuDropdown) {
+                menuToggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menuDropdown.classList.toggle('open');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!menuToggleBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+                        menuDropdown.classList.remove('open');
+                    }
+                });
+
+                const mobileLinks = menuDropdown.querySelectorAll('.mobile-link');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuDropdown.classList.remove('open');
+                    });
                 });
             }
         });

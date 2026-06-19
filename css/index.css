@@ -196,20 +196,19 @@ ul {
     position: relative;
 }
 
-.menu-toggle {
-    display: none;
-}
-
 .mobile-menu-btn {
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--primary-color);
+    background: none;
+    border: none;
+    padding: 0.5rem;
     display: inline-block;
 }
 
 .mobile-menu-dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 10px);
     right: 0;
     background: white;
     min-width: 200px;
@@ -217,11 +216,12 @@ ul {
     box-shadow: var(--shadow-lg);
     padding: 10px 0;
     display: none;
+    flex-direction: column;
     z-index: 1000;
 }
 
-.menu-toggle:checked ~ .mobile-menu-dropdown {
-    display: block;
+.mobile-menu-dropdown.open {
+    display: flex;
 }
 
 .mobile-link {
@@ -247,6 +247,15 @@ ul {
     margin: 10px;
     border-radius: 30px;
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .mobile-menu {
+        display: block;
+    }
 }
 
 /* ===== HERO SECTION ===== */
